@@ -185,12 +185,13 @@
   // проверяет кол-во в инпуте в корзине
   var handleInput = function (value) {
     var attr = value.getAttribute('maxlength');
-    value.addEventListener('change', function () {
+    value.addEventListener('change', function (evt) {
       if (value.value > attr) {
         value.value = attr;
       } else if (value.value < 1) {
         var targetCard = evt.target.closest('.card-order');
         goodCards.removeChild(targetCard);
+        emptyBasketMessage();
       }
     });
   }
@@ -243,12 +244,12 @@
         cardElement.querySelector('.card-order__img').src = goodCard.picture;
         cardElement.querySelector('.card-order__price').textContent = goodCard.price + ' ₽';
         cardElement.querySelector('.goods_card').setAttribute('data-id', goodIndex + 1);
+        var value = cardElement.querySelector('.card-order__count');
         cardElement.querySelector('.card-order__count').setAttribute('maxlength', goodCard.amount);
         goodCards.appendChild(cardElement);
         emptyBasketMessage();
         headerBasketMessage(renderTotalInBasketIncrease());
         addDisabledForInput();
-        var value = document.querySelector('.card-order__count');
         handleInput(value);
       } else {
         var value = dataAttribute.querySelector('.card-order__count');
