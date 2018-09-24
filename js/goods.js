@@ -215,6 +215,7 @@
   });
 
   // добавление выбранного товара в корзину и проверка на наличие в корзине
+  var basketCards = Object.assign(candyCards);
   var addCards = document.querySelectorAll('.card__btn');
 
   function addCardToBasket(goodIndex, target) {
@@ -222,8 +223,9 @@
       evt.preventDefault();
       var dataAttribute = goodCards.querySelector('[data-id="' + target.dataset.id + '"]');
       if (dataAttribute === null) {
-        var goodCard = candyCards[goodIndex];
+        var goodCard = basketCards[goodIndex];
         var cardElement = goodOrder.content.cloneNode(true);
+
         cardElement.querySelector('.card-order__title').textContent = goodCard.name;
         cardElement.querySelector('.card-order__img').src = goodCard.picture;
         cardElement.querySelector('.card-order__price').textContent = goodCard.price + ' ₽';
@@ -270,7 +272,6 @@
   addDisabledForInput();
 
   // Переключение вкладок в форме оплаты
-
   var payment = document.querySelector('.payment');
   var paymentCardButton = payment.querySelector('#payment__card');
   var paymentCashButton = payment.querySelector('#payment__cash');
@@ -314,6 +315,8 @@
   var deliverStore = document.querySelector('.deliver__store-map-wrap');
   var deliverList = document.querySelector('.deliver__store-list');
 
+  var metroStations = {name: 'img/map/academicheskaya.jpg'};
+
   deliverList.addEventListener('click', function (evt) {
     var target = evt.target;
     if (target.closest('#store-academicheskaya')) {
@@ -341,42 +344,80 @@
 
   // ползунок
 
-  var slider = document.querySelector('.range__filter');
-  var rangeButtonLeft = document.querySelector('.range__btn--right');
-  var rangeButtonRight = document.querySelector('.range__btn--right');
+  var sliderElem = document.querySelector('.range__filter');
+  var thumbMin = document.querySelector('.range__btn--left');
+  var thumbMax = document.querySelector('.range__btn--right');
+  var priceMax = document.querySelector('.range__price--max');
+  var priceMin = document.querySelector('.range__price--min');
+  var fillLine = document.querySelector('.range__fill-line');
+  var sliderCoords = getCoords(sliderElem);
+  var rangeEnd = sliderElem.offsetWidth - thumbMin.offsetWidth;
 
+  var min = parseInt(0, 10);
+  var max = parseInt(100, 10);
 
-  rangeButton.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
+  thumbMin.onmousedown = function (e) {
+    var thumbCoords = getCoords(thumbMin);
+    var shiftX = e.pageX - thumbCoords.left;
 
-    var startCoords = {
-      x: evt.clientX
+    document.onmousemove = function (e) {
+      var newLeft = e.pageX - shiftX - sliderCoords.left;
+      if (newLeft < 0) {
+        newLeft = 0;
+      }
+
+      if (newLeft > max - thumbMin.offsetWidth / 2) {
+        newLeft = max - thumbMin.offsetWidth / 2;
+      }
+
+      min = newLeft;
+      thumbMin.style.left = newLeft + 'px';
+      priceMin.textContent = Math.round(newLeft);
+      fillLine.style.left = Math.round(newLeft) + 'px';
     };
 
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-
-      var shift = {
-        x: startCoords.x - moveEvt.clientX
+    document.onmouseup = function () {
+        document.onmousemove = document.onmouseup = null;
       };
+      return false;
+};
 
-      startCoords = {
-        x: moveEvt.clientX
-      };
+  thumbMax.onmousedown = function (e) {
+    var thumbCoords = getCoords(thumbMax);
+    var shiftX = e.pageX - thumbCoords.left;
 
-      rangeButton.style.left = (rangeButton.offsetLeft - shift.x) + 'px';
+    document.onmousemove = function (e) {
+      var newLeft = e.pageX - shiftX - sliderCoords.left;
+
+      // если вне слайдера
+      if (newLeft < min + thumbMin.offsetWidth / 2) {
+        newLeft = min + thumbMin.offsetWidth / 2;
+      }
+
+      if (newLeft > rangeEnd) {
+        newLeft = rangeEnd;
+      }
+      max = newLeft;
+
+      thumbMax.style.left = newLeft + 'px';
+      priceMax.textContent = Math.round(newLeft);
+      fillLine.style.right = 235 - Math.round(newLeft) + 'px';
     };
-
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+    document.onmouseup = function () {
+      document.onmousemove = document.onmouseup = null;
     };
+    return false;
+  };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  });
+
+  function getCoords(elem) {
+    var box = elem.getBoundingClientRect();
+
+    return {
+      top: box.top + pageYOffset,
+      left: box.left + pageXOffset
+    };
+  }
 
   // ////////////////////////////
   // validation
