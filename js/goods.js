@@ -183,8 +183,7 @@
   addDataId();
 
   // проверяет кол-во в инпуте в корзине
-  var handleInput = function (evt) {
-    var value = document.querySelector('.card-order__count');
+  var handleInput = function (value) {
     var attr = value.getAttribute('maxlength');
     value.addEventListener('change', function () {
       if (value.value > attr) {
@@ -249,7 +248,8 @@
         emptyBasketMessage();
         headerBasketMessage(renderTotalInBasketIncrease());
         addDisabledForInput();
-        handleInput();
+        var value = document.querySelector('.card-order__count');
+        handleInput(value);
       } else {
         var value = dataAttribute.querySelector('.card-order__count');
         increaseValue(value);
