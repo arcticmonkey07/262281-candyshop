@@ -119,7 +119,7 @@
 
   appendFragment(candyCards, catalogCards, renderCard);
 
-  // --------------template--goods_card---------------------------------------
+  // ---------------- корзина ----------------
 
   var goodCards = document.querySelector('.goods__cards');
   var goodOrder = document.querySelector('#card-order');
@@ -168,11 +168,6 @@
     });
   }
 
-  // Увеличивает значение
-  var increaseValue = function (value) {
-    value.value++;
-  };
-
   // добавление id
   var cardsOnCatalog = document.querySelectorAll('.catalog__card');
   var addDataId = function () {
@@ -185,48 +180,46 @@
   // проверяет кол-во в инпуте в корзине
   var handleInput = function (value) {
     var attr = value.getAttribute('maxlength');
-    value.addEventListener('change', function (evt) {
-      if (value.value > attr) {
-        value.value = attr;
-      } else if (value.value < 1) {
-        var targetCard = evt.target.closest('.card-order');
-        goodCards.removeChild(targetCard);
-        emptyBasketMessage();
-      }
-    });
-  }
-
-  // увеличивает кол-во товара в корзине
-  goodCards.addEventListener('click', function (evt) {
-    evt.preventDefault();
-    var target = evt.target.closest('.card-order__btn--increase');
-    var cardOrder = evt.target.closest('.card-order__amount');
-    var value = cardOrder.querySelector('.card-order__count');
-    var attr = value.getAttribute('maxlength');
-    if (target === null) {
-      return;
-    } else if (value.value === attr) {
-      value = value.disabled;
-    }
-    increaseValue(value);
-  });
-
-  // уменьшает кол-во товара в корзине
-  goodCards.addEventListener('click', function (evt) {
-    evt.preventDefault();
-    var target = evt.target.closest('.card-order__btn--decrease');
-    var cardOrder = evt.target.closest('.card-order__amount');
-    var value = cardOrder.querySelector('.card-order__count');
-    if (target === null) {
-      return;
-    } else if (value.value > 1) {
-      value.value--;
-    } else {
-      var targetCard = evt.target.closest('.card-order');
+    if (parseInt(value.value, 10) > parseInt(attr, 10)) {
+      value.value = attr;
+    } else if (parseInt(value.value, 10) < 1) {
+      var targetCard = goodCards.querySelector('.card-order[data-id="' + value.dataset.id + '"]');
       goodCards.removeChild(targetCard);
       emptyBasketMessage();
     }
-  });
+  };
+
+  // слушает ручной ввод
+  function handleChangeInput(el) {
+    el.addEventListener('change', function () {
+      handleInput(el);
+    });
+  }
+
+  // Увеличивает значение
+  var increaseValue = function (value) {
+    value.value++;
+    handleInput(value);
+  };
+
+  // увеличивает кол-во товара в корзине
+  function handleIncrease(el) {
+    el.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      var value = el.parentNode.querySelector('.card-order__count');
+      increaseValue(value);
+    });
+  }
+
+  // уменьшает кол-во товара в корзине
+  function handleDecrease(el) {
+    el.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      var value = el.parentNode.querySelector('.card-order__count');
+      value.value--;
+      handleInput(value);
+    });
+  }
 
   // добавление выбранного товара в корзину и проверка на наличие в корзине
   var basketCards = Object.assign(candyCards);
@@ -243,16 +236,22 @@
         cardElement.querySelector('.card-order__title').textContent = goodCard.name;
         cardElement.querySelector('.card-order__img').src = goodCard.picture;
         cardElement.querySelector('.card-order__price').textContent = goodCard.price + ' ₽';
+
         cardElement.querySelector('.goods_card').setAttribute('data-id', goodIndex + 1);
         var value = cardElement.querySelector('.card-order__count');
-        cardElement.querySelector('.card-order__count').setAttribute('maxlength', goodCard.amount);
+        value.setAttribute('data-id', goodIndex + 1);
+        var input = cardElement.querySelector('.card-order__count');
+        input.setAttribute('maxlength', goodCard.amount);
+        var incBtn = cardElement.querySelector('.card-order__btn--increase');
+        var decBtn = cardElement.querySelector('.card-order__btn--decrease');
+        handleIncrease(incBtn);
+        handleDecrease(decBtn);
+        handleChangeInput(input);
         goodCards.appendChild(cardElement);
         emptyBasketMessage();
         headerBasketMessage(renderTotalInBasketIncrease());
         addDisabledForInput();
-        handleInput(value);
       } else {
-        var value = dataAttribute.querySelector('.card-order__count');
         increaseValue(value);
       }
     });
@@ -331,8 +330,6 @@
   var deliverStore = document.querySelector('.deliver__store-map-wrap');
   var deliverList = document.querySelector('.deliver__store-list');
 
-  var metroStations = {name: 'img/map/academicheskaya.jpg'};
-
   deliverList.addEventListener('click', function (evt) {
     var target = evt.target;
     if (target.closest('#store-academicheskaya')) {
@@ -358,7 +355,7 @@
     }
   });
 
-  // ползунок
+  // ---------------- ползунок ----------------
 
   var sliderElem = document.querySelector('.range__filter');
   var thumbMin = document.querySelector('.range__btn--left');
@@ -376,8 +373,8 @@
     var thumbCoords = getCoords(thumbMin);
     var shiftX = e.pageX - thumbCoords.left;
 
-    document.onmousemove = function (e) {
-      var newLeft = e.pageX - shiftX - sliderCoords.left;
+    document.onmousemove = function (ev) {
+      var newLeft = ev.pageX - shiftX - sliderCoords.left;
       if (newLeft < 0) {
         newLeft = 0;
       }
@@ -393,17 +390,17 @@
     };
 
     document.onmouseup = function () {
-        document.onmousemove = document.onmouseup = null;
-      };
-      return false;
-};
+      document.onmousemove = document.onmouseup = null;
+    };
+    return false;
+  };
 
   thumbMax.onmousedown = function (e) {
     var thumbCoords = getCoords(thumbMax);
     var shiftX = e.pageX - thumbCoords.left;
 
-    document.onmousemove = function (e) {
-      var newLeft = e.pageX - shiftX - sliderCoords.left;
+    document.onmousemove = function (evt) {
+      var newLeft = evt.pageX - shiftX - sliderCoords.left;
 
       // если вне слайдера
       if (newLeft < min + thumbMin.offsetWidth / 2) {
@@ -425,7 +422,6 @@
     return false;
   };
 
-
   function getCoords(elem) {
     var box = elem.getBoundingClientRect();
 
@@ -435,8 +431,7 @@
     };
   }
 
-  // ////////////////////////////
-  // validation
+  // ---------------- validation ----------------
 
   var cardNumberInput = document.querySelector('#payment__card-number');
   var wrapCardNumberInput = document.querySelector('.payment__input-wrap--card-number');
