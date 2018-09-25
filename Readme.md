@@ -1,7 +1,7 @@
 # Личный проект «Кэндишоп» [![Build status][travis-image]][travis-url]
 
 * Студент: [Петр Васюкович](https://up.htmlacademy.ru/javascript/15/user/262281).
-* Наставник: [Артем Карачев](https://up.htmlacademy.ru/javascript/15/user/818515).
+* Наставник: [Роман Мисюрин](https://up.htmlacademy.ru/javascript/15/user/538267).
 
 ---
 
