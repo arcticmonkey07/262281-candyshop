@@ -347,6 +347,7 @@
     } else {
       value = dataAttribute.querySelector('.card-order__count');
       increaseValue(value);
+      value.setAttribute('data-amount', value.value);
     }
 
   }
@@ -361,8 +362,10 @@
     }
 
     var targetCard = evt.target.closest('.card-order');
+    var value = targetCard.querySelector('.card-order__count');
+    var test = totalInBasket - value.dataset.amount;
     goodCards.removeChild(targetCard);
-    renderTotalInBasket(totalInBasket--);
+    renderTotalInBasket(test);
     emptyBasketMessage();
     addDisabledForInput();
   });
