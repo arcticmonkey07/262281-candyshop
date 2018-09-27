@@ -201,14 +201,18 @@
   var goodCards = document.querySelector('.goods__cards');
   var goodOrder = document.querySelector('#card-order');
 
+  // смотрит на кол-во товара в корзине
+  function getCartTotalCount() {
+    var goodsInCart = document.querySelectorAll('.goods__cards .card-order__count');
+    var total = 0;
+    for (var i = 0; i < goodsInCart.length; i++) {
+      total += +goodsInCart[i].dataset.amount;
+    }
+    return total;
+  }
+
   // добавляет сообщение в корзину в header
   var headerBasket = document.querySelector('.main-header__basket');
-  var totalInBasket = 0;
-
-  var renderTotalInBasket = function (total) {
-    headerBasketMessage(totalInBasket);
-    return total;
-  };
 
   var headerBasketMessage = function (basketNum) {
 
@@ -258,6 +262,8 @@
 
     if (parseInt(value.value, 10) > parseInt(attribute, 10)) {
       value.value = attribute;
+      value.setAttribute('data-amount', value.value);
+      headerBasketMessage(getCartTotalCount());
     } else if (parseInt(value.value, 10) < 1) {
       var targetCard = goodCards.querySelector('.card-order[data-id="' + value.dataset.id + '"]');
       goodCards.removeChild(targetCard);
@@ -285,6 +291,8 @@
       evt.preventDefault();
       var value = el.parentNode.querySelector('.card-order__count');
       increaseValue(value);
+      value.setAttribute('data-amount', value.value);
+      headerBasketMessage(getCartTotalCount());
     });
   }
 
@@ -295,6 +303,8 @@
       var value = el.parentNode.querySelector('.card-order__count');
       value.value--;
       handleInput(value);
+      value.setAttribute('data-amount', value.value);
+      headerBasketMessage(getCartTotalCount());
     });
   }
 
@@ -305,7 +315,7 @@
       evt.preventDefault();
       emptyBasketMessage();
       addDisabledForInput();
-      renderTotalInBasket(totalInBasket++);
+      headerBasketMessage(getCartTotalCount());
     };
   }
 
@@ -343,6 +353,7 @@
       handleIncrease(incBtn);
       handleDecrease(decBtn);
       handleChangeInput(input);
+      value.setAttribute('data-amount', value.value);
       goodCards.appendChild(cardElement);
     } else {
       value = dataAttribute.querySelector('.card-order__count');
@@ -363,11 +374,10 @@
 
     var targetCard = evt.target.closest('.card-order');
     var value = targetCard.querySelector('.card-order__count');
-    var test = totalInBasket - value.dataset.amount;
     goodCards.removeChild(targetCard);
-    renderTotalInBasket(test);
     emptyBasketMessage();
     addDisabledForInput();
+    headerBasketMessage(getCartTotalCount());
   });
 
   // Добавляет и убирает атрибут disabled на инпуты
@@ -383,77 +393,6 @@
 
   };
   addDisabledForInput();
-
-  // Переключение вкладок в форме оплаты
-  var payment = document.querySelector('.payment');
-  var paymentCardButton = payment.querySelector('#payment__card');
-  var paymentCashButton = payment.querySelector('#payment__cash');
-  var paymentCard = payment.querySelector('.payment__card-wrap');
-  var paymentCash = payment.querySelector('.payment__cash-wrap');
-
-  var paymentSwitch = function () {
-    paymentCash.classList.toggle('visually-hidden', paymentCardButton.checked === true);
-    paymentCard.classList.toggle('visually-hidden', paymentCashButton.checked === true);
-  };
-
-  paymentCardButton.addEventListener('click', function () {
-    paymentSwitch();
-  });
-
-  paymentCashButton.addEventListener('click', function () {
-    paymentSwitch();
-  });
-
-  // Переключение вкладок в блоке доставки
-  var delivery = document.querySelector('.deliver');
-  var storeButton = delivery.querySelector('#deliver__store');
-  var courierButton = delivery.querySelector('#deliver__courier');
-  var store = delivery.querySelector('.deliver__store');
-  var courier = delivery.querySelector('.deliver__courier');
-
-  var deliverySwitch = function () {
-    courier.classList.toggle('visually-hidden', storeButton.checked === true);
-    store.classList.toggle('visually-hidden', courierButton.checked === true);
-  };
-
-  storeButton.addEventListener('click', function () {
-    deliverySwitch();
-  });
-
-  courierButton.addEventListener('click', function () {
-    deliverySwitch();
-  });
-
-  // переключение адресов самовывоза
-  var deliverStore = document.querySelector('.deliver__store-map-wrap');
-  var deliverList = document.querySelector('.deliver__store-list');
-
-  deliverList.addEventListener('click', function (evt) {
-    var target = evt.target;
-
-    if (target.closest('#store-academicheskaya')) {
-      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/academicheskaya.jpg';
-    } else if (target.closest('#store-vasileostrovskaya')) {
-      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/vasileostrovskaya.jpg';
-    } else if (target.closest('#store-rechka')) {
-      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/rechka.jpg';
-    } else if (target.closest('#store-petrogradskaya')) {
-      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/petrogradskaya.jpg';
-    } else if (target.closest('#store-proletarskaya')) {
-      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/proletarskaya.jpg';
-    } else if (target.closest('#store-vostaniya')) {
-      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/vostaniya.jpg';
-    } else if (target.closest('#store-prosvesheniya')) {
-      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/prosvesheniya.jpg';
-    } else if (target.closest('#store-frunzenskaya')) {
-      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/frunzenskaya.jpg';
-    } else if (target.closest('#store-chernishevskaya')) {
-      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/chernishevskaya.jpg';
-    } else if (target.closest('#store-tehinstitute')) {
-      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/tehinstitute.jpg';
-    }
-
-  });
 
   // ---------------- ползунок ----------------
 
@@ -533,11 +472,46 @@
 
   // ---------------- validation ----------------
 
-  var cardNumberInput = document.querySelector('#payment__card-number');
-  var wrapCardNumberInput = document.querySelector('.payment__input-wrap--card-number');
+  var payment = document.querySelector('.payment');
+  var wrapCardNumber = payment.querySelector('.payment__input-wrap--card-number');
+  var bankCard = payment.querySelector('#payment__card');
+  var payCash = payment.querySelector('#payment__cash');
+  var cardNumber = payment.querySelector('#payment__card-number');
+  var cardDate = payment.querySelector('#payment__card-date');
+  var cardCvc = payment.querySelector('#payment__card-cvc');
+  var cardHolder = payment.querySelector('#payment__cardholder');
+  var paymentCard = payment.querySelector('.payment__card-wrap');
+  var paymentCash = payment.querySelector('.payment__cash-wrap');
 
-  cardNumberInput.onblur = function () {
-    var num = cardNumberInput.value;
+  // Переключение вкладок в форме оплаты
+  var paymentSwitch = function () {
+    paymentCash.classList.toggle('visually-hidden', bankCard.checked === true);
+    paymentCard.classList.toggle('visually-hidden', payCash.checked === true);
+  };
+
+  bankCard.addEventListener('click', function () {
+    paymentSwitch();
+    cardNumber.disabled = false;
+    cardDate.disabled = false;
+    cardCvc.disabled = false;
+    cardHolder.disabled = false;
+  });
+
+  payCash.addEventListener('click', function () {
+    paymentSwitch();
+    cardNumber.disabled = true;
+    cardDate.disabled = true;
+    cardCvc.disabled = true;
+    cardHolder.disabled = true;
+    cardNumber.required = false;
+    cardDate.required = false;
+    cardCvc.required = false;
+    cardHolder.required = false;
+  });
+
+  // проверка номера карты по алгоритму Луна
+  cardNumber.onblur = function () {
+    var num = cardNumber.value;
 
     function moon(cardNumber) {
 
@@ -565,13 +539,69 @@
     }
 
     if (!isNaN(num) && moon(num)) {
-      wrapCardNumberInput.classList.remove('text-input--error');
-      wrapCardNumberInput.classList.add('text-input--correct');
+      wrapCardNumber.classList.remove('text-input--error');
+      wrapCardNumber.classList.add('text-input--correct');
     } else {
-      wrapCardNumberInput.classList.remove('text-input--correct');
-      wrapCardNumberInput.classList.add('text-input--error');
+      wrapCardNumber.classList.remove('text-input--correct');
+      wrapCardNumber.classList.add('text-input--error');
     }
 
   };
+
+  // Переключение вкладок в блоке доставки
+  var deliver = document.querySelector('.deliver');
+  var storeButton = deliver.querySelector('#deliver__store');
+  var courierButton = deliver.querySelector('#deliver__courier');
+  var store = deliver.querySelector('.deliver__store');
+  var courier = deliver.querySelector('.deliver__courier');
+  var deliverStreet = deliver.querySelector('#deliver__street');
+  var deliverHouse = deliver.querySelector('#deliver__house');
+  var deliverFloor = deliver.querySelector('#deliver__floor');
+  var deliverRoom = deliver.querySelector('#deliver__room');
+  var deliverDescription = deliver.querySelector('.deliver__textarea');
+
+  var deliverySwitch = function () {
+    courier.classList.toggle('visually-hidden', storeButton.checked === true);
+    store.classList.toggle('visually-hidden', courierButton.checked === true);
+  };
+
+  storeButton.addEventListener('click', function () {
+    deliverySwitch();
+  });
+
+  courierButton.addEventListener('click', function () {
+    deliverySwitch();
+  });
+
+  var deliverStore = deliver.querySelector('.deliver__store-map-wrap');
+  var deliverList = deliver.querySelector('.deliver__store-list');
+
+  // переключение адресов самовывоза
+  deliverList.addEventListener('click', function (evt) {
+    var target = evt.target;
+
+    if (target.closest('#store-academicheskaya')) {
+      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/academicheskaya.jpg';
+    } else if (target.closest('#store-vasileostrovskaya')) {
+      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/vasileostrovskaya.jpg';
+    } else if (target.closest('#store-rechka')) {
+      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/rechka.jpg';
+    } else if (target.closest('#store-petrogradskaya')) {
+      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/petrogradskaya.jpg';
+    } else if (target.closest('#store-proletarskaya')) {
+      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/proletarskaya.jpg';
+    } else if (target.closest('#store-vostaniya')) {
+      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/vostaniya.jpg';
+    } else if (target.closest('#store-prosvesheniya')) {
+      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/prosvesheniya.jpg';
+    } else if (target.closest('#store-frunzenskaya')) {
+      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/frunzenskaya.jpg';
+    } else if (target.closest('#store-chernishevskaya')) {
+      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/chernishevskaya.jpg';
+    } else if (target.closest('#store-tehinstitute')) {
+      deliverStore.querySelector('.deliver__store-map-img').src = 'img/map/tehinstitute.jpg';
+    }
+
+  });
 
 })();
