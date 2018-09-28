@@ -373,7 +373,6 @@
     }
 
     var targetCard = evt.target.closest('.card-order');
-    var value = targetCard.querySelector('.card-order__count');
     goodCards.removeChild(targetCard);
     emptyBasketMessage();
     addDisabledForInput();
@@ -472,6 +471,18 @@
 
   // ---------------- validation ----------------
 
+  var email = document.querySelector('#contact-data__email');
+
+  // валидация имени тел и почты
+  email.addEventListener('blur', function (evt) {
+    var target = evt.target;
+    if (!email.checkValidity()) {
+      target.closest('.text-input').classList.add('text-input--error');
+    } else {
+      target.closest('.text-input').classList.remove('text-input--error');
+    }
+  });
+
   var payment = document.querySelector('.payment');
   var wrapCardNumber = payment.querySelector('.payment__input-wrap--card-number');
   var bankCard = payment.querySelector('#payment__card');
@@ -482,6 +493,9 @@
   var cardHolder = payment.querySelector('#payment__cardholder');
   var paymentCard = payment.querySelector('.payment__card-wrap');
   var paymentCash = payment.querySelector('.payment__cash-wrap');
+
+  var paymentMessage = payment.querySelector('.payment__card-status');
+  var paymentStatus = payment.querySelector('.payment__card-status-message');
 
   // Переключение вкладок в форме оплаты
   var paymentSwitch = function () {
@@ -513,21 +527,21 @@
   cardNumber.onblur = function () {
     var num = cardNumber.value;
 
-    function moon(cardNumber) {
+    function moon(number) {
 
       var arr = [];
-      cardNumber = cardNumber.toString();
+      number = number.toString();
 
-      for (var e = 0; e < cardNumber.length; e++) {
+      for (var e = 0; e < number.length; e++) {
         if (e % 2 === 0) {
-          var m = parseInt(cardNumber[e], 16) * 2;
+          var m = parseInt(number[e], 16) * 2;
           if (m > 9) {
             arr.push(m - 9);
           } else {
             arr.push(m);
           }
         } else {
-          var n = parseInt(cardNumber[e], 16);
+          var n = parseInt(number[e], 16);
           arr.push(n);
         }
       }
@@ -548,6 +562,52 @@
 
   };
 
+  cardDate.addEventListener('blur', function (evt) {
+    var target = evt.target;
+    if (!cardDate.checkValidity()) {
+      target.closest('.text-input').classList.add('text-input--error');
+    } else {
+      target.closest('.text-input').classList.remove('text-input--error');
+    }
+  });
+
+  cardCvc.addEventListener('blur', function (evt) {
+    var target = evt.target;
+    if (!cardCvc.checkValidity()) {
+      target.closest('.text-input').classList.add('text-input--error');
+    } else {
+      target.closest('.text-input').classList.remove('text-input--error');
+    }
+  });
+
+  cardHolder.addEventListener('blur', function (evt) {
+    var target = evt.target;
+    if (!cardHolder.checkValidity()) {
+      target.closest('.text-input').classList.add('text-input--error');
+    } else {
+      target.closest('.text-input').classList.remove('text-input--error');
+    }
+  });
+
+  // проверяет валидацию всех форм в блоке банковской карты
+  var setCardValidity = function () {
+    if (cardNumber.checkValidity() && cardDate.checkValidity() && cardCvc.checkValidity() && cardHolder.checkValidity()) {
+      paymentMessage.textContent = 'ОДОБРЕН';
+      paymentStatus.classList.remove('payment__card-status--not-active');
+      paymentStatus.classList.add('payment__card-status--active');
+    } else {
+      paymentMessage.textContent = 'НЕ ОПРЕДЕЛЁН';
+      paymentStatus.classList.remove('payment__card-status--active');
+      paymentStatus.classList.add('payment__card-status--not-active');
+    }
+  };
+
+  // следит за изменениями в инпутах
+  cardNumber.addEventListener('change', setCardValidity);
+  cardDate.addEventListener('change', setCardValidity);
+  cardCvc.addEventListener('change', setCardValidity);
+  cardHolder.addEventListener('change', setCardValidity);
+
   // Переключение вкладок в блоке доставки
   var deliver = document.querySelector('.deliver');
   var storeButton = deliver.querySelector('#deliver__store');
@@ -567,10 +627,26 @@
 
   storeButton.addEventListener('click', function () {
     deliverySwitch();
+    deliverStreet.disabled = true;
+    deliverHouse.disabled = true;
+    deliverFloor.disabled = true;
+    deliverRoom.disabled = true;
+    deliverDescription.disabled = true;
+    deliverStreet.required = false;
+    deliverHouse.required = false;
+    deliverRoom.required = false;
   });
 
   courierButton.addEventListener('click', function () {
     deliverySwitch();
+    deliverStreet.disabled = false;
+    deliverHouse.disabled = false;
+    deliverFloor.disabled = false;
+    deliverRoom.disabled = false;
+    deliverDescription.disabled = false;
+    deliverStreet.required = true;
+    deliverHouse.required = true;
+    deliverRoom.required = true;
   });
 
   var deliverStore = deliver.querySelector('.deliver__store-map-wrap');
