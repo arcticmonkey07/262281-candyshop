@@ -379,20 +379,6 @@
     headerBasketMessage(getCartTotalCount());
   });
 
-  // Добавляет и убирает атрибут disabled на инпуты
-  var order = document.querySelector('.order');
-  var inputs = order.querySelectorAll('input');
-
-  var addDisabledForInput = function () {
-    var article = document.querySelector('.goods_card');
-
-    for (var e = 0; e < inputs.length; e++) {
-      inputs[e].disabled = (article === null);
-    }
-
-  };
-  addDisabledForInput();
-
   // ---------------- ползунок ----------------
 
   var sliderElem = document.querySelector('.range__filter');
@@ -471,6 +457,39 @@
 
   // ---------------- validation ----------------
 
+  var payment = document.querySelector('.payment');
+  var deliverDescription = document.querySelector('.deliver__textarea');
+  var courier = document.querySelector('.deliver__courier');
+
+  var addDisabledForInput = function () {
+    var article = document.querySelector('.goods_card');
+
+    var contact = document.querySelector('.contact-data');
+    var contactInputs = contact.querySelectorAll('.text-input__input');
+
+    for (var e = 0; e < contactInputs.length; e++) {
+      contactInputs[e].disabled = (article === null);
+    }
+
+    var paymentInputs = payment.querySelectorAll('.text-input__input');
+
+    for (var u = 0; u < paymentInputs.length; u++) {
+      paymentInputs[u].disabled = (article === null);
+    }
+
+    var courierInputs = courier.querySelectorAll('.text-input__input');
+
+    for (var o = 0; o < courierInputs.length; o++) {
+      courierInputs[o].disabled = true;
+      deliverDescription.disabled = true;
+    }
+
+    var buyButton = document.querySelector('.buy__submit-btn');
+    buyButton.disabled = (article === null);
+
+  };
+  addDisabledForInput();
+
   var email = document.querySelector('#contact-data__email');
 
   // валидация имени тел и почты
@@ -483,7 +502,6 @@
     }
   });
 
-  var payment = document.querySelector('.payment');
   var wrapCardNumber = payment.querySelector('.payment__input-wrap--card-number');
   var bankCard = payment.querySelector('#payment__card');
   var payCash = payment.querySelector('#payment__cash');
@@ -613,12 +631,10 @@
   var storeButton = deliver.querySelector('#deliver__store');
   var courierButton = deliver.querySelector('#deliver__courier');
   var store = deliver.querySelector('.deliver__store');
-  var courier = deliver.querySelector('.deliver__courier');
   var deliverStreet = deliver.querySelector('#deliver__street');
   var deliverHouse = deliver.querySelector('#deliver__house');
   var deliverFloor = deliver.querySelector('#deliver__floor');
   var deliverRoom = deliver.querySelector('#deliver__room');
-  var deliverDescription = deliver.querySelector('.deliver__textarea');
 
   var deliverySwitch = function () {
     courier.classList.toggle('visually-hidden', storeButton.checked === true);
@@ -637,6 +653,15 @@
     deliverRoom.required = false;
   });
 
+  // блокирует инпуты в блоке выбора метро самовывоза
+  var disableStoreInputs = function () {
+    var storeInputs = store.querySelectorAll('.input-btn__input');
+
+    for (var e = 0; e < storeInputs.length; e++) {
+      storeInputs[e].disabled = true;
+    }
+  };
+
   courierButton.addEventListener('click', function () {
     deliverySwitch();
     deliverStreet.disabled = false;
@@ -647,6 +672,7 @@
     deliverStreet.required = true;
     deliverHouse.required = true;
     deliverRoom.required = true;
+    disableStoreInputs();
   });
 
   var deliverStore = deliver.querySelector('.deliver__store-map-wrap');
