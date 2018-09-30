@@ -390,27 +390,27 @@
   var sliderCoords = getCoords(sliderElem);
   var rangeEnd = sliderElem.offsetWidth - thumbMin.offsetWidth;
 
-  var min = parseInt(0, 10);
-  var max = parseInt(100, 10);
+  var min = parseInt(36, 10);
+  var max = parseInt(198, 10);
 
   thumbMin.onmousedown = function (e) {
     var thumbCoords = getCoords(thumbMin);
     var shiftX = e.pageX - thumbCoords.left;
 
     document.onmousemove = function (ev) {
-      var newLeft = ev.pageX - shiftX - sliderCoords.left;
-      if (newLeft < 0) {
-        newLeft = 0;
+      var newLeftMin = ev.pageX - shiftX - sliderCoords.left;
+      if (newLeftMin < 0) {
+        newLeftMin = 0;
       }
 
-      if (newLeft > max - thumbMin.offsetWidth / 2) {
-        newLeft = max - thumbMin.offsetWidth / 2;
+      if (newLeftMin > max) {
+        newLeftMin = max;
       }
 
-      min = newLeft;
-      thumbMin.style.left = newLeft + 'px';
-      priceMin.textContent = Math.round(newLeft);
-      fillLine.style.left = Math.round(newLeft) + 'px';
+      min = newLeftMin;
+      thumbMin.style.left = newLeftMin + 'px';
+      priceMin.textContent = Math.round(newLeftMin);
+      fillLine.style.left = Math.round(newLeftMin) + 'px';
     };
 
     document.onmouseup = function () {
@@ -424,21 +424,21 @@
     var shiftX = e.pageX - thumbCoords.left;
 
     document.onmousemove = function (evt) {
-      var newLeft = evt.pageX - shiftX - sliderCoords.left;
+      var newLeftMax = evt.pageX - shiftX - sliderCoords.left;
 
       // если вне слайдера
-      if (newLeft < min + thumbMin.offsetWidth / 2) {
-        newLeft = min + thumbMin.offsetWidth / 2;
+      if (newLeftMax < min) {
+        newLeftMax = min;
       }
 
-      if (newLeft > rangeEnd) {
-        newLeft = rangeEnd;
+      if (newLeftMax > rangeEnd) {
+        newLeftMax = rangeEnd;
       }
-      max = newLeft;
+      max = newLeftMax;
 
-      thumbMax.style.left = newLeft + 'px';
-      priceMax.textContent = Math.round(newLeft);
-      fillLine.style.right = 235 - Math.round(newLeft) + 'px';
+      thumbMax.style.left = newLeftMax + 'px';
+      priceMax.textContent = Math.round(newLeftMax);
+      fillLine.style.right = 235 - Math.round(newLeftMax) + 'px';
     };
     document.onmouseup = function () {
       document.onmousemove = document.onmouseup = null;
