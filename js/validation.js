@@ -11,20 +11,20 @@
     var contact = document.querySelector('.contact-data');
     var contactInputs = contact.querySelectorAll('.text-input__input');
 
-    for (var e = 0; e < contactInputs.length; e++) {
-      contactInputs[e].disabled = (article === null);
+    for (var i = 0; i < contactInputs.length; i++) {
+      contactInputs[i].disabled = (article === null);
     }
 
     var paymentInputs = payment.querySelectorAll('.text-input__input');
 
-    for (var u = 0; u < paymentInputs.length; u++) {
-      paymentInputs[u].disabled = (article === null);
+    for (var j = 0; j < paymentInputs.length; j++) {
+      paymentInputs[j].disabled = (article === null);
     }
 
     var courierInputs = courier.querySelectorAll('.text-input__input');
 
-    for (var o = 0; o < courierInputs.length; o++) {
-      courierInputs[o].disabled = true;
+    for (var k = 0; k < courierInputs.length; k++) {
+      courierInputs[k].disabled = true;
       deliverDescription.disabled = true;
     }
 
@@ -58,7 +58,7 @@
   var paymentStatus = payment.querySelector('.payment__card-status-message');
 
   bankCard.addEventListener('click', function () {
-    window.paymentSwitch();
+    window.orderSwitches.paymentSwitch();
     cardNumber.disabled = false;
     cardDate.disabled = false;
     cardCvc.disabled = false;
@@ -66,7 +66,7 @@
   });
 
   payCash.addEventListener('click', function () {
-    window.paymentSwitch();
+    window.orderSwitches.paymentSwitch();
     cardNumber.disabled = true;
     cardDate.disabled = true;
     cardCvc.disabled = true;
@@ -81,21 +81,21 @@
   cardNumber.onblur = function () {
     var num = cardNumber.value;
 
-    function moon(number) {
+    function luhn(number) {
 
       var arr = [];
       number = number.toString();
 
-      for (var e = 0; e < number.length; e++) {
-        if (e % 2 === 0) {
-          var m = parseInt(number[e], 16) * 2;
+      for (var i = 0; i < number.length; i++) {
+        if (i % 2 === 0) {
+          var m = parseInt(number[i], 16) * 2;
           if (m > 9) {
             arr.push(m - 9);
           } else {
             arr.push(m);
           }
         } else {
-          var n = parseInt(number[e], 16);
+          var n = parseInt(number[i], 16);
           arr.push(n);
         }
       }
@@ -106,7 +106,7 @@
       return Boolean(!(summ % 10));
     }
 
-    if (!isNaN(num) && moon(num)) {
+    if (!isNaN(num) && luhn(num)) {
       wrapCardNumber.classList.remove('text-input--error');
       wrapCardNumber.classList.add('text-input--correct');
     } else {
@@ -116,32 +116,22 @@
 
   };
 
-  cardDate.addEventListener('blur', function (evt) {
-    var target = evt.target;
-    if (!cardDate.checkValidity()) {
-      target.closest('.text-input').classList.add('text-input--error');
-    } else {
-      target.closest('.text-input').classList.remove('text-input--error');
-    }
-  });
+  var cardInputsValidity = function (input) {
+    input.addEventListener('blur', function (evt) {
+      var target = evt.target;
+      if (!input.checkValidity()) {
+        target.closest('.text-input').classList.remove('text-input--correct');
+        target.closest('.text-input').classList.add('text-input--error');
+      } else {
+        target.closest('.text-input').classList.remove('text-input--error');
+        target.closest('.text-input').classList.add('text-input--correct');
+      }
+    });
+  };
 
-  cardCvc.addEventListener('blur', function (evt) {
-    var target = evt.target;
-    if (!cardCvc.checkValidity()) {
-      target.closest('.text-input').classList.add('text-input--error');
-    } else {
-      target.closest('.text-input').classList.remove('text-input--error');
-    }
-  });
-
-  cardHolder.addEventListener('blur', function (evt) {
-    var target = evt.target;
-    if (!cardHolder.checkValidity()) {
-      target.closest('.text-input').classList.add('text-input--error');
-    } else {
-      target.closest('.text-input').classList.remove('text-input--error');
-    }
-  });
+  cardInputsValidity(cardDate);
+  cardInputsValidity(cardCvc);
+  cardInputsValidity(cardHolder);
 
   // проверяет валидацию всех форм в блоке банковской карты
   var setCardValidity = function () {
@@ -173,7 +163,7 @@
   var deliverRoom = deliver.querySelector('#deliver__room');
 
   storeButton.addEventListener('click', function () {
-    window.deliverySwitch();
+    window.orderSwitches.deliverySwitch();
     deliverStreet.disabled = true;
     deliverHouse.disabled = true;
     deliverFloor.disabled = true;
@@ -189,8 +179,8 @@
   var disableStoreInputs = function () {
     var storeInputs = store.querySelectorAll('.input-btn__input');
 
-    for (var e = 0; e < storeInputs.length; e++) {
-      storeInputs[e].disabled = true;
+    for (var i = 0; i < storeInputs.length; i++) {
+      storeInputs[i].disabled = true;
     }
   };
   disableStoreInputs();
@@ -198,13 +188,13 @@
   window.enableStoreInputs = function () {
     var storeInputs = store.querySelectorAll('.input-btn__input');
 
-    for (var e = 0; e < storeInputs.length; e++) {
-      storeInputs[e].disabled = false;
+    for (var i = 0; i < storeInputs.length; i++) {
+      storeInputs[i].disabled = false;
     }
   };
 
   courierButton.addEventListener('click', function () {
-    window.deliverySwitch();
+    window.orderSwitches.deliverySwitch();
     deliverStreet.disabled = false;
     deliverHouse.disabled = false;
     deliverFloor.disabled = false;

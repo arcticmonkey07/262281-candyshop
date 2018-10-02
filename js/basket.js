@@ -16,8 +16,8 @@
   // добавление id всем карточкам
   var cardsOnCatalog = document.querySelectorAll('.catalog__card');
   var addDataId = function () {
-    for (var a = 0; a < cardsOnCatalog.length; a++) {
-      cardsOnCatalog[a].setAttribute('data-id', a + 1);
+    for (var i = 0; i < cardsOnCatalog.length; i++) {
+      cardsOnCatalog[i].setAttribute('data-id', i + 1);
     }
   };
   addDataId();
@@ -39,8 +39,8 @@
   // Добавляет товары в корзину при клике на кнопку добавить
   function addBasketBtnHandler() {
 
-    for (var j = 0; j < addCards.length; j++) {
-      addCards[j].addEventListener('click', addBasketHandler(j));
+    for (var i = 0; i < addCards.length; i++) {
+      addCards[i].addEventListener('click', addBasketHandler(i));
     }
 
   }
