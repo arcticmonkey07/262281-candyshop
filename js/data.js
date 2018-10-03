@@ -81,11 +81,6 @@
     'вилларибо',
     'виллабаджо'];
 
-  window.catalogCards = document.querySelector('.catalog__cards');
-  var catalogLoad = document.querySelector('.catalog__load');
-  window.catalogCards.classList.remove('catalog__cards--load');
-  catalogLoad.classList.add('visually-hidden');
-
   // создает массив неповторяющихся картинок
   var pictures = getRandomArray(PICTURE, CARD_ALL);
 
