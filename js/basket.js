@@ -44,8 +44,8 @@
     // добавление id всем карточкам
     var cardsOnCatalog = document.querySelectorAll('.catalog__card');
     var addDataId = function () {
-      for (var j = 0; j < cardsOnCatalog.length; j++) {
-        cardsOnCatalog[j].setAttribute('data-id', j + 1);
+      for (var i = 0; i < cardsOnCatalog.length; i++) {
+        cardsOnCatalog[i].setAttribute('data-id', i + 1);
       }
     };
     addDataId();
@@ -67,8 +67,8 @@
     // Добавляет товары в корзину при клике на кнопку добавить
     function addBasketBtnHandler() {
 
-      for (var k = 0; k < addCards.length; k++) {
-        addCards[k].addEventListener('click', addBasketHandler(k));
+      for (var i = 0; i < addCards.length; i++) {
+        addCards[i].addEventListener('click', addBasketHandler(i));
       }
 
     }
@@ -126,8 +126,8 @@
     function getCartTotalCount() {
       var goodsInCart = document.querySelectorAll('.goods__cards .card-order__count');
       var total = 0;
-      for (var m = 0; m < goodsInCart.length; m++) {
-        total += +goodsInCart[m].dataset.amount;
+      for (var i = 0; i < goodsInCart.length; i++) {
+        total += +goodsInCart[i].dataset.amount;
       }
       return total;
     }
