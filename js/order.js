@@ -38,9 +38,9 @@
   var orderError = function (errorMessage) {
     orderErrorModal.classList.remove('modal--hidden');
     document.addEventListener('keydown', onModalEscPress);
-    orderErrorCode = orderErrorModal.querySelector('.modal__error');
+    var orderErrorCode = orderErrorModal.querySelector('.modal__error');
     orderErrorCode.textContent = errorMessage;
-  }
+  };
 
   var closeErrorOrder = function () {
     orderErrorModal.classList.add('modal--hidden');
