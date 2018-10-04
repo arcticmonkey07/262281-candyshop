@@ -56,12 +56,12 @@
     catalogLoad.classList.add('visually-hidden');
   }
 
-  var goods = [];
+  window.goods = [];
 
   // загружает массив объектов с сервера
   var successHandler = function (objects) {
-    goods = objects;
-    appendFragment(goods, window.catalogCards, renderCard);
+    window.goods = objects;
+    appendFragment(window.goods, window.catalogCards, renderCard);
     window.init();
   };
 

@@ -79,11 +79,11 @@
       var dataAttribute = goodCards.querySelector('[data-id="' + target.dataset.id + '"]');
 
       if (dataAttribute === null) {
-        var goodCard = window.candyCards[l];
+        var goodCard = window.goods[l];
         var cardElement = goodOrder.content.cloneNode(true);
 
-        cardElement.querySelector('.card-order__title').textContent = goodCard.NAME;
-        cardElement.querySelector('.card-order__img').src = goodCard.PICTURE;
+        cardElement.querySelector('.card-order__title').textContent = goodCard.name;
+        cardElement.querySelector('.card-order__img').src = 'img/cards/' + goodCard.picture;
         cardElement.querySelector('.card-order__price').textContent = goodCard.price + ' ₽';
 
         cardElement.querySelector('.goods_card').setAttribute('data-id', l + 1);
