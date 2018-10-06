@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var payment = document.querySelector('.payment');
   var deliverDescription = document.querySelector('.deliver__textarea');
   var courier = document.querySelector('.deliver__courier');
