@@ -9,11 +9,15 @@
   var deliverImg = document.querySelector('.deliver__store-map-img');
 
   deliver.addEventListener('click', function () {
+
     for (var i = 0; i < deliverAdress.length; i++) {
+
       if (deliverAdress[i].checked) {
         deliverImg.src = MAP_IMG[i];
       }
+
     }
+
   });
 
 })();
