@@ -80,34 +80,34 @@
 
   // проверка номера карты по алгоритму Луна
   cardNumber.onblur = function () {
-    var num = cardNumber.value;
+    var value = cardNumber.value;
 
     function luhn(number) {
 
-      var arr = [];
+      var array = [];
       number = number.toString();
 
       for (var i = 0; i < number.length; i++) {
         if (i % 2 === 0) {
-          var m = parseInt(number[i], 16) * 2;
-          if (m > 9) {
-            arr.push(m - 9);
+          var digit = parseInt(number[i], 16) * 2;
+          if (digit > 9) {
+            array.push(digit - 9);
           } else {
-            arr.push(m);
+            array.push(digit);
           }
         } else {
-          var n = parseInt(number[i], 16);
-          arr.push(n);
+          var numeric = parseInt(number[i], 16);
+          array.push(numeric);
         }
       }
 
-      var summ = arr.reduce(function (a, b) {
+      var sum = array.reduce(function (a, b) {
         return a + b;
       });
-      return Boolean(!(summ % 10));
+      return Boolean(!(sum % 10));
     }
 
-    if (!isNaN(num) && luhn(num)) {
+    if (!isNaN(value) && luhn(value)) {
       wrapCardNumber.classList.remove('text-input--error');
       wrapCardNumber.classList.add('text-input--correct');
     } else {

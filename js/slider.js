@@ -3,19 +3,20 @@
 (function () {
 
   // Ползунок
-  var MAX_FILTER_PRICE = 100;
-  var MIN_FILTER_PRICE = 0;
+  var MAXIMUM_FILTER_PRICE = 100;
+  var MINIMUM_FILTER_PRICE = 0;
+
   var range = document.querySelector('.range');
   var rangeFilter = range.querySelector('.range__filter');
   var rangeFillLine = rangeFilter.querySelector('.range__fill-line');
-  var btnRight = rangeFilter.querySelector('.range__btn--right');
-  var btnLeft = rangeFilter.querySelector('.range__btn--left');
-  btnRight.style.right = 0;
-  btnLeft.style.left = 0;
+  var buttonRight = rangeFilter.querySelector('.range__btn--right');
+  var buttonLeft = rangeFilter.querySelector('.range__btn--left');
+  buttonRight.style.right = 0;
+  buttonLeft.style.left = 0;
   rangeFillLine.style.left = 0;
   rangeFillLine.style.right = 0;
-  var btnRightWidth = btnRight.offsetWidth;
-  var rangeFilllineWidth = rangeFillLine.offsetWidth - btnRightWidth;
+  var buttonRightWidth = buttonRight.offsetWidth;
+  var rangeFilllineWidth = rangeFillLine.offsetWidth - buttonRightWidth;
 
 
   var makeDraggable = function (element, getBounds, moveCallback) {
@@ -72,93 +73,93 @@
     }
   };
 
-  var rangePriceMax = document.querySelector('.range__price--max');
-  rangePriceMax.innerText = MAX_FILTER_PRICE;
-  var rangePriceMin = document.querySelector('.range__price--min');
-  rangePriceMin.innerText = MIN_FILTER_PRICE;
+  var rangePriceMaximum = document.querySelector('.range__price--max');
+  rangePriceMaximum.innerText = MAXIMUM_FILTER_PRICE;
+  var rangePriceMinimum = document.querySelector('.range__price--min');
+  rangePriceMinimum.innerText = MINIMUM_FILTER_PRICE;
 
   var calculatePrice = function (sliderValue) {
     var value = getSliderValue(sliderValue);
-    var price = value * MAX_FILTER_PRICE;
+    var price = value * MAXIMUM_FILTER_PRICE;
     price = Math.round(price);
     return price;
   };
 
   var changeRangeFillLine = function () {
-    var btnRightCoord = btnRight.getBoundingClientRect().left;
-    var btnLeftCoord = btnLeft.getBoundingClientRect().left;
-    var differenceCoords = btnRightCoord - btnLeftCoord;
-    var btnLeftStyleLeft = btnLeft.offsetLeft;
+    var buttonRightCoord = buttonRight.getBoundingClientRect().left;
+    var buttonLeftCoord = buttonLeft.getBoundingClientRect().left;
+    var differenceCoords = buttonRightCoord - buttonLeftCoord;
+    var buttonLeftStyleLeft = buttonLeft.offsetLeft;
     rangeFillLine.style.width = (differenceCoords) + 'px';
-    rangeFillLine.style.left = (btnLeftStyleLeft) + 'px';
+    rangeFillLine.style.left = (buttonLeftStyleLeft) + 'px';
   };
 
   var getSliderBoundMax = function () {
-    var getButtonRightCoord = btnRight.getBoundingClientRect();
-    var getButtonLeftCoord = btnLeft.getBoundingClientRect();
+    var getButtonRightCoord = buttonRight.getBoundingClientRect();
+    var getButtonLeftCoord = buttonLeft.getBoundingClientRect();
     var getRangeFillLineCoords = rangeFilter.getBoundingClientRect();
     var buttonRightCoord = getButtonRightCoord.left;
     var buttonLeftCoord = getButtonLeftCoord.left;
     var rangeFillLineLeftCoord = getRangeFillLineCoords.left;
-    var rangeFillLineRightCoord = getRangeFillLineCoords.right - btnRight.offsetWidth;
+    var rangeFillLineRightCoord = getRangeFillLineCoords.right - buttonRight.offsetWidth;
     var differenceFillLineCoords = (rangeFillLineRightCoord - rangeFillLineLeftCoord);
     if (buttonRightCoord > rangeFillLineRightCoord) {
-      btnRight.style.left = (differenceFillLineCoords) + 'px';
+      buttonRight.style.left = (differenceFillLineCoords) + 'px';
     } else if (buttonRightCoord < buttonLeftCoord) {
-      btnRight.style.left = btnLeft.style.left;
+      buttonRight.style.left = buttonLeft.style.left;
     }
   };
 
   var getSliderBoundMin = function () {
-    var getButtonRightCoord = btnRight.getBoundingClientRect();
-    var getButtonLeftCoord = btnLeft.getBoundingClientRect();
+    var getButtonRightCoord = buttonRight.getBoundingClientRect();
+    var getButtonLeftCoord = buttonLeft.getBoundingClientRect();
     var getRangeFillLineCoords = rangeFilter.getBoundingClientRect();
     var buttonRightCoord = getButtonRightCoord.left;
     var buttonLeftCoord = getButtonLeftCoord.left;
     var rangeFillLineLeftCoord = getRangeFillLineCoords.left;
     if (buttonLeftCoord < rangeFillLineLeftCoord) {
-      btnLeft.style.left = 0;
+      buttonLeft.style.left = 0;
     } else if (buttonLeftCoord > buttonRightCoord) {
-      btnLeft.style.left = btnRight.style.left;
+      buttonLeft.style.left = buttonRight.style.left;
     }
   };
 
-  var updateMaxPrice = function () {
-    var price = calculatePrice(btnRight);
-    rangePriceMax.innerText = price;
-    if (window.slider.onUpdateMaxPrice) {
-      window.slider.onUpdateMaxPrice(price);
+  var updateMaximumPrice = function () {
+    var price = calculatePrice(buttonRight);
+    rangePriceMaximum.innerText = price;
+    if (window.slider.onUpdateMaximumPrice) {
+      window.slider.onUpdateMaximumPrice(price);
     }
     changeRangeFillLine();
   };
 
-  var updateMinPrice = function () {
-    var price = calculatePrice(btnLeft);
-    rangePriceMin.innerText = price;
-    if (window.slider.onUpdateMinPrice) {
-      window.slider.onUpdateMinPrice(price);
+  var updateMinimumPrice = function () {
+    var price = calculatePrice(buttonLeft);
+    rangePriceMinimum.innerText = price;
+    if (window.slider.onUpdateMinimumPrice) {
+      window.slider.onUpdateMinimumPrice(price);
     }
     changeRangeFillLine();
   };
 
   var clearSliderValue = function () {
-    var maxPrice = document.querySelector('.range__price--max');
-    var minPrice = document.querySelector('.range__price--min');
-    btnRight.style.left = rangeFilllineWidth + 'px';
-    btnLeft.style.left = 0;
+    var maximumPrice = document.querySelector('.range__price--max');
+    var minimumPrice = document.querySelector('.range__price--min');
+    buttonRight.style.left = rangeFilllineWidth + 'px';
+    buttonLeft.style.left = 0;
     rangeFillLine.style.left = 0;
     rangeFillLine.style.width = rangeFilllineWidth + 'px';
-    maxPrice.textContent = MAX_FILTER_PRICE;
-    minPrice.textContent = MIN_FILTER_PRICE;
+    maximumPrice.textContent = MAXIMUM_FILTER_PRICE;
+    minimumPrice.textContent = MINIMUM_FILTER_PRICE;
   };
 
-  makeDraggable(btnRight, getSliderBoundMax, updateMaxPrice);
+  makeDraggable(buttonRight, getSliderBoundMax, updateMaximumPrice);
 
-  makeDraggable(btnLeft, getSliderBoundMin, updateMinPrice);
+  makeDraggable(buttonLeft, getSliderBoundMin, updateMinimumPrice);
 
   window.slider = {
-    onUpdateMinPrice: null,
-    onUpdateMaxPrice: null,
+    onUpdateMinimumPrice: null,
+    onUpdateMaximumPrice: null,
     clearSliderValue: clearSliderValue
   };
 

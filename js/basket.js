@@ -31,7 +31,7 @@
     var addCards = document.querySelectorAll('.card__btn');
 
     // Добавляет товары в корзину при клике на кнопку добавить
-    var addBasketBtnHandler = function () {
+    var addBasketButtonHandler = function () {
 
       for (var i = 0; i < addCards.length; i++) {
         addCards[i].addEventListener('click', addBasketHandler(
@@ -40,7 +40,7 @@
       }
 
     };
-    addBasketBtnHandler();
+    addBasketButtonHandler();
 
     // добавление выбранного товара в корзину и проверка на наличие в корзине
     var addCardToBasket = function (target, i) {
@@ -59,10 +59,10 @@
         value.setAttribute('data-id', i);
         var input = cardElement.querySelector('.card-order__count');
         input.setAttribute('maxlength', goodCard.amount);
-        var incBtn = cardElement.querySelector('.card-order__btn--increase');
-        var decBtn = cardElement.querySelector('.card-order__btn--decrease');
-        handleIncrease(incBtn);
-        handleDecrease(decBtn);
+        var increaseButton = cardElement.querySelector('.card-order__btn--increase');
+        var decreaseButton = cardElement.querySelector('.card-order__btn--decrease');
+        handleIncrease(increaseButton);
+        handleDecrease(decreaseButton);
         handleChangeInput(input);
         value.setAttribute('data-amount', value.value);
         goodCards.appendChild(cardElement);
@@ -121,9 +121,9 @@
   };
 
   // слушает ручной ввод
-  var handleChangeInput = function (el) {
-    el.addEventListener('change', function () {
-      handleInput(el);
+  var handleChangeInput = function (element) {
+    element.addEventListener('change', function () {
+      handleInput(element);
     });
   };
 
@@ -134,10 +134,10 @@
   };
 
   // увеличивает кол-во товара в корзине
-  var handleIncrease = function (el) {
-    el.addEventListener('click', function (evt) {
+  var handleIncrease = function (element) {
+    element.addEventListener('click', function (evt) {
       evt.preventDefault();
-      var value = el.parentNode.querySelector('.card-order__count');
+      var value = element.parentNode.querySelector('.card-order__count');
       increaseValue(value);
       value.setAttribute('data-amount', value.value);
       headerBasketMessage(getCartTotalCount());
@@ -145,10 +145,10 @@
   };
 
   // уменьшает кол-во товара в корзине
-  var handleDecrease = function (el) {
-    el.addEventListener('click', function (evt) {
+  var handleDecrease = function (element) {
+    element.addEventListener('click', function (evt) {
       evt.preventDefault();
-      var value = el.parentNode.querySelector('.card-order__count');
+      var value = element.parentNode.querySelector('.card-order__count');
       value.value--;
       handleInput(value);
       value.setAttribute('data-amount', value.value);
@@ -159,16 +159,16 @@
   // добавляет сообщение в корзину в header
   var headerBasket = document.querySelector('.main-header__basket');
 
-  var headerBasketMessage = function (basketNum) {
+  var headerBasketMessage = function (basketNumber) {
 
-    if (basketNum < 1) {
+    if (basketNumber < 1) {
       headerBasket.innerHTML = 'В корзине ничего нет';
-    } else if (basketNum === 1) {
-      headerBasket.innerHTML = 'В корзине ' + basketNum + ' товар';
-    } else if (basketNum >= 5) {
-      headerBasket.innerHTML = 'В корзине ' + basketNum + ' товаров';
+    } else if (basketNumber === 1) {
+      headerBasket.innerHTML = 'В корзине ' + basketNumber + ' товар';
+    } else if (basketNumber >= 5) {
+      headerBasket.innerHTML = 'В корзине ' + basketNumber + ' товаров';
     } else {
-      headerBasket.innerHTML = 'В корзине ' + basketNum + ' товара';
+      headerBasket.innerHTML = 'В корзине ' + basketNumber + ' товара';
     }
 
   };

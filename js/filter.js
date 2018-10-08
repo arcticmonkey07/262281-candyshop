@@ -13,8 +13,8 @@
     noSugar: false,
     vegetarian: false,
     gluten: false,
-    minValue: 0,
-    maxValue: 100,
+    minimumValue: 0,
+    maximumValue: 100,
     amount: false,
     popular: false,
     favorite: false,
@@ -80,7 +80,7 @@
   };
 
   var filterByMaxPrice = function (card) {
-    var maxPrice = card.price <= query.maxValue;
+    var maxPrice = card.price <= query.maximumValue;
 
     if (!maxPrice) {
       return false;
@@ -91,7 +91,7 @@
   };
 
   var filterByMinPrice = function (card) {
-    var minPrice = card.price >= query.minValue;
+    var minPrice = card.price >= query.minimumValue;
 
     if (!minPrice) {
       return false;
@@ -125,8 +125,8 @@
 
   var filterKind = document.querySelector('.catalog__filter--kind');
   var inputsKind = filterKind.querySelectorAll('input');
-  var filterNtrition = document.querySelector('.catalog__filter--nutrition');
-  var inputsNutrition = filterNtrition.querySelectorAll('input');
+  var filterNutrition = document.querySelector('.catalog__filter--nutrition');
+  var inputsNutrition = filterNutrition.querySelectorAll('input');
   var inputFavorite = document.querySelector('#filter-favorite');
   var inputAvailability = document.querySelector('#filter-availability');
   var filteredData;
@@ -344,13 +344,13 @@
     getFilterNumberFavorite(true, numberFavorite);
   };
 
-  window.slider.onUpdateMaxPrice = function (price) {
-    query.maxValue = price;
+  window.slider.onUpdateMaximumPrice = function (price) {
+    query.maximumValue = price;
     showFilteredData();
   };
 
-  window.slider.onUpdateMinPrice = function (price) {
-    query.minValue = price;
+  window.slider.onUpdateMinimumPrice = function (price) {
+    query.minimumValue = price;
     showFilteredData();
   };
 
