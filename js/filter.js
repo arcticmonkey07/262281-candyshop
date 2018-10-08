@@ -40,10 +40,9 @@
 
     if (!kind) {
       return false;
-    } else {
-      return kind;
     }
 
+    return kind;
   };
 
   var filterBySugar = function (card) {
@@ -51,10 +50,9 @@
 
     if (!sugar) {
       return false;
-    } else {
-      return sugar;
     }
 
+    return sugar;
   };
 
   var filterByVegetarian = function (card) {
@@ -62,10 +60,9 @@
 
     if (!vegetarian) {
       return false;
-    } else {
-      return vegetarian;
     }
 
+    return vegetarian;
   };
 
   var filterByGlutenn = function (card) {
@@ -73,10 +70,9 @@
 
     if (!gluten) {
       return false;
-    } else {
-      return gluten;
     }
 
+    return gluten;
   };
 
   var filterByMaxPrice = function (card) {
@@ -84,10 +80,9 @@
 
     if (!maxPrice) {
       return false;
-    } else {
-      return maxPrice;
     }
 
+    return maxPrice;
   };
 
   var filterByMinPrice = function (card) {
@@ -95,10 +90,9 @@
 
     if (!minPrice) {
       return false;
-    } else {
-      return minPrice;
     }
 
+    return minPrice;
   };
 
   var filterByAvailability = function (card) {
@@ -106,10 +100,9 @@
 
     if (!availability) {
       return false;
-    } else {
-      return availability;
     }
 
+    return availability;
   };
 
   var filterByFavorite = function (card) {
@@ -117,10 +110,9 @@
 
     if (!favorite) {
       return false;
-    } else {
-      return favorite;
     }
 
+    return favorite;
   };
 
   var filterKind = document.querySelector('.catalog__filter--kind');
@@ -195,9 +187,9 @@
       clearCheckedInput(inputsNutrition);
       inputFavorite.checked = false;
       showFilteredData();
-    } else {
-      return;
     }
+
+    return;
   });
 
   document.querySelector('#filter-sugar-free').addEventListener('change', function (e) {

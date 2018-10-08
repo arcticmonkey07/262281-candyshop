@@ -94,7 +94,7 @@
     rangeFillLine.style.left = (buttonLeftStyleLeft) + 'px';
   };
 
-  var getSliderBoundMax = function () {
+  var getSliderBoundMaximum = function () {
     var getButtonRightCoord = buttonRight.getBoundingClientRect();
     var getButtonLeftCoord = buttonLeft.getBoundingClientRect();
     var getRangeFillLineCoords = rangeFilter.getBoundingClientRect();
@@ -110,7 +110,7 @@
     }
   };
 
-  var getSliderBoundMin = function () {
+  var getSliderBoundMinimum = function () {
     var getButtonRightCoord = buttonRight.getBoundingClientRect();
     var getButtonLeftCoord = buttonLeft.getBoundingClientRect();
     var getRangeFillLineCoords = rangeFilter.getBoundingClientRect();
@@ -153,9 +153,9 @@
     minimumPrice.textContent = MINIMUM_FILTER_PRICE;
   };
 
-  makeDraggable(buttonRight, getSliderBoundMax, updateMaximumPrice);
+  makeDraggable(buttonRight, getSliderBoundMaximum, updateMaximumPrice);
 
-  makeDraggable(buttonLeft, getSliderBoundMin, updateMinimumPrice);
+  makeDraggable(buttonLeft, getSliderBoundMinimum, updateMinimumPrice);
 
   window.slider = {
     onUpdateMinimumPrice: null,
