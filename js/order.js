@@ -11,7 +11,7 @@
   var modalErrorClose = orderErrorModal.querySelector('.modal__close');
 
   // успех
-  var onModalSuccsessEscPress = function (evt) {
+  var modalSuccsessEscPressHandler = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       closeSuccsessOrder();
     }
@@ -19,13 +19,13 @@
 
   var orderSuccsess = function () {
     orderSuccsessModal.classList.remove('modal--hidden');
-    document.addEventListener('keydown', onModalSuccsessEscPress);
+    document.addEventListener('keydown', modalSuccsessEscPressHandler);
     order.reset();
   };
 
   var closeSuccsessOrder = function () {
     orderSuccsessModal.classList.add('modal--hidden');
-    document.removeEventListener('keydown', onModalSuccsessEscPress);
+    document.removeEventListener('keydown', modalSuccsessEscPressHandler);
   };
 
   modalSuccessClose.addEventListener('click', function () {
@@ -34,7 +34,7 @@
   //
 
   // ошибка
-  var onModalErrorEscPress = function (evt) {
+  var modalErrorEscPressHandler = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       closeErrorOrder();
     }
@@ -42,14 +42,14 @@
 
   var orderError = function (errorMessage) {
     orderErrorModal.classList.remove('modal--hidden');
-    document.addEventListener('keydown', onModalErrorEscPress);
+    document.addEventListener('keydown', modalErrorEscPressHandler);
     var orderErrorCode = orderErrorModal.querySelector('.modal__error');
     orderErrorCode.textContent = errorMessage;
   };
 
   var closeErrorOrder = function () {
     orderErrorModal.classList.add('modal--hidden');
-    document.removeEventListener('keydown', onModalErrorEscPress);
+    document.removeEventListener('keydown', modalErrorEscPressHandler);
   };
 
   modalErrorClose.addEventListener('click', function () {

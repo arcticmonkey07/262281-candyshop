@@ -336,12 +336,12 @@
     getFilterNumberFavorite(true, numberFavorite);
   };
 
-  window.slider.onUpdateMaximumPrice = function (price) {
+  window.slider.updateMaximumPriceHandler = function (price) {
     query.maximumValue = price;
     showFilteredData();
   };
 
-  window.slider.onUpdateMinimumPrice = function (price) {
+  window.slider.updateMinimumPriceHandler = function (price) {
     query.minimumValue = price;
     showFilteredData();
   };

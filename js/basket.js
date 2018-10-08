@@ -61,9 +61,9 @@
         input.setAttribute('maxlength', goodCard.amount);
         var increaseButton = cardElement.querySelector('.card-order__btn--increase');
         var decreaseButton = cardElement.querySelector('.card-order__btn--decrease');
-        handleIncrease(increaseButton);
-        handleDecrease(decreaseButton);
-        handleChangeInput(input);
+        increaseHandler(increaseButton);
+        decreaseHandler(decreaseButton);
+        changeInputHandler(input);
         value.setAttribute('data-amount', value.value);
         goodCards.appendChild(cardElement);
       } else {
@@ -105,7 +105,7 @@
   };
 
   // проверяет кол-во в инпуте в корзине
-  var handleInput = function (value) {
+  var inputHandler = function (value) {
     var attribute = value.getAttribute('maxlength');
 
     if (parseInt(value.value, 10) > parseInt(attribute, 10)) {
@@ -121,20 +121,20 @@
   };
 
   // слушает ручной ввод
-  var handleChangeInput = function (element) {
+  var changeInputHandler = function (element) {
     element.addEventListener('change', function () {
-      handleInput(element);
+      inputHandler(element);
     });
   };
 
   // Увеличивает значение
   var increaseValue = function (value) {
     value.value++;
-    handleInput(value);
+    inputHandler(value);
   };
 
   // увеличивает кол-во товара в корзине
-  var handleIncrease = function (element) {
+  var increaseHandler = function (element) {
     element.addEventListener('click', function (evt) {
       evt.preventDefault();
       var value = element.parentNode.querySelector('.card-order__count');
@@ -145,12 +145,12 @@
   };
 
   // уменьшает кол-во товара в корзине
-  var handleDecrease = function (element) {
+  var decreaseHandler = function (element) {
     element.addEventListener('click', function (evt) {
       evt.preventDefault();
       var value = element.parentNode.querySelector('.card-order__count');
       value.value--;
-      handleInput(value);
+      inputHandler(value);
       value.setAttribute('data-amount', value.value);
       headerBasketMessage(getCartTotalCount());
     });

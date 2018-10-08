@@ -32,7 +32,7 @@
         x: element.offsetLeft
       };
 
-      var onMouseMove = function (moveEvt) {
+      var mouseMoveHandler = function (moveEvt) {
         moveEvt.preventDefault();
 
         var shift = {
@@ -44,13 +44,13 @@
 
       };
 
-      var onMouseUp = function (upEvt) {
+      var mouseUpHandler = function (upEvt) {
         upEvt.preventDefault();
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
       };
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('mousemove', mouseMoveHandler);
+      document.addEventListener('mouseup', mouseUpHandler);
     });
   };
 
@@ -127,8 +127,8 @@
   var updateMaximumPrice = function () {
     var price = calculatePrice(buttonRight);
     rangePriceMaximum.innerText = price;
-    if (window.slider.onUpdateMaximumPrice) {
-      window.slider.onUpdateMaximumPrice(price);
+    if (window.slider.updateMaximumPriceHandler) {
+      window.slider.updateMaximumPriceHandler(price);
     }
     changeRangeFillLine();
   };
@@ -136,8 +136,8 @@
   var updateMinimumPrice = function () {
     var price = calculatePrice(buttonLeft);
     rangePriceMinimum.innerText = price;
-    if (window.slider.onUpdateMinimumPrice) {
-      window.slider.onUpdateMinimumPrice(price);
+    if (window.slider.updateMinimumPriceHandler) {
+      window.slider.updateMinimumPriceHandler(price);
     }
     changeRangeFillLine();
   };
@@ -158,8 +158,8 @@
   makeDraggable(buttonLeft, getSliderBoundMinimum, updateMinimumPrice);
 
   window.slider = {
-    onUpdateMinimumPrice: null,
-    onUpdateMaximumPrice: null,
+    updateMinimumPriceHandler: null,
+    updateMaximumPriceHandler: null,
     clearSliderValue: clearSliderValue
   };
 
