@@ -5,6 +5,8 @@
   // Ползунок
   var MAXIMUM_FILTER_PRICE = 100;
   var MINIMUM_FILTER_PRICE = 0;
+  var START_COORD = 0;
+  var FINISH_COORD = 1;
 
   var range = document.querySelector('.range');
   var rangeFilter = range.querySelector('.range__filter');
@@ -60,16 +62,14 @@
     var buttonCoord = getButtonCoords.left;
     var rangeFillLineLeftCoord = getRangeFillLineCoords.left;
     var rangeFillLineRightCoord = getRangeFillLineCoords.right - button.offsetWidth;
-    var startCoord = 0;
-    var finishCoord = 1;
     var widthFillLine = rangeFillLineRightCoord - rangeFillLineLeftCoord;
     var differenceCoords = (rangeFillLineRightCoord - buttonCoord) / widthFillLine;
     if (buttonCoord === rangeFillLineRightCoord) {
-      return finishCoord;
+      return FINISH_COORD;
     } else if (buttonCoord === rangeFillLineLeftCoord) {
-      return startCoord;
+      return START_COORD;
     } else {
-      return finishCoord - differenceCoords;
+      return FINISH_COORD - differenceCoords;
     }
   };
 
