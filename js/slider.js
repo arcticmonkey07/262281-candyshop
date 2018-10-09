@@ -86,40 +86,33 @@
   };
 
   var changeRangeFillLine = function () {
-    var buttonRightCoord = buttonRight.getBoundingClientRect().left;
-    var buttonLeftCoord = buttonLeft.getBoundingClientRect().left;
-    var differenceCoords = buttonRightCoord - buttonLeftCoord;
-    var buttonLeftStyleLeft = buttonLeft.offsetLeft;
+    var differenceCoords = buttonRight.getBoundingClientRect().left - buttonLeft.getBoundingClientRect().left;
     rangeFillLine.style.width = (differenceCoords) + 'px';
-    rangeFillLine.style.left = (buttonLeftStyleLeft) + 'px';
+    rangeFillLine.style.left = (buttonLeft.offsetLeft) + 'px';
   };
 
   var getSliderBoundMaximum = function () {
-    var getButtonRightCoord = buttonRight.getBoundingClientRect();
-    var getButtonLeftCoord = buttonLeft.getBoundingClientRect();
-    var getRangeFillLineCoords = rangeFilter.getBoundingClientRect();
-    var buttonRightCoord = getButtonRightCoord.left;
-    var buttonLeftCoord = getButtonLeftCoord.left;
-    var rangeFillLineLeftCoord = getRangeFillLineCoords.left;
-    var rangeFillLineRightCoord = getRangeFillLineCoords.right - buttonRight.offsetWidth;
+    var buttonRightCoord = buttonRight.getBoundingClientRect();
+    var buttonLeftCoord = buttonLeft.getBoundingClientRect();
+    var rangeFillLineCoords = rangeFilter.getBoundingClientRect();
+    var rangeFillLineLeftCoord = rangeFillLineCoords.left;
+    var rangeFillLineRightCoord = rangeFillLineCoords.right - buttonRight.offsetWidth;
     var differenceFillLineCoords = (rangeFillLineRightCoord - rangeFillLineLeftCoord);
-    if (buttonRightCoord > rangeFillLineRightCoord) {
+    if (buttonRightCoord.left > rangeFillLineRightCoord) {
       buttonRight.style.left = (differenceFillLineCoords) + 'px';
-    } else if (buttonRightCoord < buttonLeftCoord) {
+    } else if (buttonRightCoord.left < buttonLeftCoord.left) {
       buttonRight.style.left = buttonLeft.style.left;
     }
   };
 
   var getSliderBoundMinimum = function () {
-    var getButtonRightCoord = buttonRight.getBoundingClientRect();
-    var getButtonLeftCoord = buttonLeft.getBoundingClientRect();
-    var getRangeFillLineCoords = rangeFilter.getBoundingClientRect();
-    var buttonRightCoord = getButtonRightCoord.left;
-    var buttonLeftCoord = getButtonLeftCoord.left;
-    var rangeFillLineLeftCoord = getRangeFillLineCoords.left;
-    if (buttonLeftCoord < rangeFillLineLeftCoord) {
+    var buttonRightCoord = buttonRight.getBoundingClientRect();
+    var buttonLeftCoord = buttonLeft.getBoundingClientRect();
+    var rangeFillLineCoords = rangeFilter.getBoundingClientRect();
+    var rangeFillLineLeftCoord = rangeFillLineCoords.left;
+    if (buttonLeftCoord.left < rangeFillLineLeftCoord) {
       buttonLeft.style.left = 0;
-    } else if (buttonLeftCoord > buttonRightCoord) {
+    } else if (buttonLeftCoord.left > buttonRightCoord.left) {
       buttonLeft.style.left = buttonRight.style.left;
     }
   };

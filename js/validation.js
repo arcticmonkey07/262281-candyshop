@@ -33,6 +33,7 @@
     buyButton.disabled = (article === null);
 
   };
+
   window.addDisabledForInput();
 
   var email = document.querySelector('#contact-data__email');
@@ -72,14 +73,10 @@
     cardDate.disabled = true;
     cardCvc.disabled = true;
     cardHolder.disabled = true;
-    cardNumber.required = false;
-    cardDate.required = false;
-    cardCvc.required = false;
-    cardHolder.required = false;
   });
 
   // проверка номера карты по алгоритму Луна
-  cardNumber.onblur = function () {
+  cardNumber.addEventListener('blur', function () {
     var value = cardNumber.value;
 
     function luhn(number) {
@@ -115,7 +112,7 @@
       wrapCardNumber.classList.add('text-input--error');
     }
 
-  };
+  });
 
   var cardInputsValidity = function (input) {
     input.addEventListener('blur', function (evt) {
@@ -170,9 +167,6 @@
     deliverFloor.disabled = true;
     deliverRoom.disabled = true;
     deliverDescription.disabled = true;
-    deliverStreet.required = false;
-    deliverHouse.required = false;
-    deliverRoom.required = false;
     window.enableStoreInputs();
   });
 
@@ -183,6 +177,7 @@
     for (var i = 0; i < storeInputs.length; i++) {
       storeInputs[i].disabled = true;
     }
+
   };
   disableStoreInputs();
 
@@ -192,6 +187,7 @@
     for (var i = 0; i < storeInputs.length; i++) {
       storeInputs[i].disabled = false;
     }
+
   };
 
   courierButton.addEventListener('click', function () {

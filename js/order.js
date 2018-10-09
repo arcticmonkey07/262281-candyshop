@@ -5,9 +5,9 @@
   var ESC_KEYCODE = 27;
 
   var order = document.querySelector('.buy').querySelector('form');
-  var orderSuccsessModal = document.querySelector('.order__success');
+  var orderSuccessModal = document.querySelector('.order__success');
   var orderErrorModal = document.querySelector('.order__error');
-  var modalSuccessClose = orderSuccsessModal.querySelector('.modal__close');
+  var modalSuccessClose = orderSuccessModal.querySelector('.modal__close');
   var modalErrorClose = orderErrorModal.querySelector('.modal__close');
 
   // успех
@@ -17,14 +17,14 @@
     }
   };
 
-  var orderSuccsess = function () {
-    orderSuccsessModal.classList.remove('modal--hidden');
+  var orderSuccess = function () {
+    orderSuccessModal.classList.remove('modal--hidden');
     document.addEventListener('keydown', modalSuccsessEscPressHandler);
     order.reset();
   };
 
   var closeSuccsessOrder = function () {
-    orderSuccsessModal.classList.add('modal--hidden');
+    orderSuccessModal.classList.add('modal--hidden');
     document.removeEventListener('keydown', modalSuccsessEscPressHandler);
   };
 
@@ -59,7 +59,7 @@
 
   // отправка на сервер
   order.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(order), orderSuccsess, orderError);
+    window.backend.save(new FormData(order), orderSuccess, orderError);
     evt.preventDefault();
   });
 

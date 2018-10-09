@@ -2,7 +2,16 @@
 
 (function () {
 
-  var MAP_IMAGE = ['img/map/academicheskaya.jpg', 'img/map/vasileostrovskaya.jpg', 'img/map/rechka.jpg', 'img/map/petrogradskaya.jpg', 'img/map/proletarskaya.jpg', 'img/map/vostaniya.jpg', 'img/map/prosvesheniya.jpg', 'img/map/frunzenskaya.jpg', 'img/map/chernishevskaya.jpg', 'img/map/tehinstitute.jpg'];
+  var MAP_IMAGE = ['img/map/academicheskaya.jpg',
+    'img/map/vasileostrovskaya.jpg',
+    'img/map/rechka.jpg',
+    'img/map/petrogradskaya.jpg',
+    'img/map/proletarskaya.jpg',
+    'img/map/vostaniya.jpg',
+    'img/map/prosvesheniya.jpg',
+    'img/map/frunzenskaya.jpg',
+    'img/map/chernishevskaya.jpg',
+    'img/map/tehinstitute.jpg'];
 
   var deliver = document.querySelector('.deliver');
   var deliverAdress = document.querySelectorAll('input[name="store"]');

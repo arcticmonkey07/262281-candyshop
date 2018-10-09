@@ -8,9 +8,8 @@
   // убирает сообщение о пустой корзине
   var emptyBasketMessage = function () {
     var goodsArticle = document.querySelector('.goods_card');
-    var goodCardsEmpty = document.querySelector('.goods__card-empty');
-    goodCards.classList.toggle('goods__cards--empty', goodsArticle === null);
-    goodCardsEmpty.classList.toggle('visually-hidden', goodsArticle !== null);
+    document.querySelector('.goods__cards').classList.toggle('goods__cards--empty', goodsArticle === null);
+    document.querySelector('.goods__card-empty').classList.toggle('visually-hidden', goodsArticle !== null);
   };
 
   window.runAddToBasketCard = function () {
@@ -28,14 +27,14 @@
       };
     };
 
-    var addCards = document.querySelectorAll('.card__btn');
+    var addButtons = document.querySelectorAll('.card__btn');
 
     // Добавляет товары в корзину при клике на кнопку добавить
     var addBasketButtonHandler = function () {
 
-      for (var i = 0; i < addCards.length; i++) {
-        addCards[i].addEventListener('click', addBasketHandler(
-            addCards[i].closest('.catalog__card').dataset.id
+      for (var i = 0; i < addButtons.length; i++) {
+        addButtons[i].addEventListener('click', addBasketHandler(
+            addButtons[i].closest('.catalog__card').dataset.id
         ));
       }
 
