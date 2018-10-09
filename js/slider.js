@@ -3,22 +3,25 @@
 (function () {
 
   // Ползунок
-  var MAX_FILTER_PRICE = 100;
-  var MIN_FILTER_PRICE = 0;
+  var MAXIMUM_FILTER_PRICE = 100;
+  var MINIMUM_FILTER_PRICE = 0;
+  var START_COORD = 0;
+  var FINISH_COORD = 1;
+
   var range = document.querySelector('.range');
   var rangeFilter = range.querySelector('.range__filter');
   var rangeFillLine = rangeFilter.querySelector('.range__fill-line');
-  var btnRight = rangeFilter.querySelector('.range__btn--right');
-  var btnLeft = rangeFilter.querySelector('.range__btn--left');
-  btnRight.style.right = 0;
-  btnLeft.style.left = 0;
+  var buttonRight = rangeFilter.querySelector('.range__btn--right');
+  var buttonLeft = rangeFilter.querySelector('.range__btn--left');
+  buttonRight.style.right = 0;
+  buttonLeft.style.left = 0;
   rangeFillLine.style.left = 0;
   rangeFillLine.style.right = 0;
-  var btnRightWidth = btnRight.offsetWidth;
-  var rangeFilllineWidth = rangeFillLine.offsetWidth - btnRightWidth;
+  var buttonRightWidth = buttonRight.offsetWidth;
+  var rangeFilllineWidth = rangeFillLine.offsetWidth - buttonRightWidth;
 
 
-  var makeDraggable = function (element, getBounds, moveCallback) {
+  var makeDraggable = function (element, bounds, moveCallback) {
 
     element.addEventListener('mousedown', function (evt) {
       evt.preventDefault();
@@ -31,134 +34,125 @@
         x: element.offsetLeft
       };
 
-      var onMouseMove = function (moveEvt) {
+      var mouseMoveHandler = function (moveEvt) {
         moveEvt.preventDefault();
 
         var shift = {
           x: startPointerCoords.x - moveEvt.clientX
         };
         element.style.left = (startElementCoords.x - shift.x) + 'px';
-        getBounds();
+        bounds();
         moveCallback();
 
       };
 
-      var onMouseUp = function (upEvt) {
+      var mouseUpHandler = function (upEvt) {
         upEvt.preventDefault();
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
       };
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('mousemove', mouseMoveHandler);
+      document.addEventListener('mouseup', mouseUpHandler);
     });
   };
 
   var getSliderValue = function (button) {
-    var getButtonCoords = button.getBoundingClientRect();
-    var getRangeFillLineCoords = rangeFilter.getBoundingClientRect();
-    var buttonCoord = getButtonCoords.left;
-    var rangeFillLineLeftCoord = getRangeFillLineCoords.left;
-    var rangeFillLineRightCoord = getRangeFillLineCoords.right - button.offsetWidth;
-    var startCoord = 0;
-    var finishCoord = 1;
+    var buttonCoords = button.getBoundingClientRect();
+    var rangeFillLineCoords = rangeFilter.getBoundingClientRect();
+    var buttonCoord = buttonCoords.left;
+    var rangeFillLineLeftCoord = rangeFillLineCoords.left;
+    var rangeFillLineRightCoord = rangeFillLineCoords.right - button.offsetWidth;
     var widthFillLine = rangeFillLineRightCoord - rangeFillLineLeftCoord;
     var differenceCoords = (rangeFillLineRightCoord - buttonCoord) / widthFillLine;
     if (buttonCoord === rangeFillLineRightCoord) {
-      return finishCoord;
+      return FINISH_COORD;
     } else if (buttonCoord === rangeFillLineLeftCoord) {
-      return startCoord;
+      return START_COORD;
     } else {
-      return finishCoord - differenceCoords;
+      return FINISH_COORD - differenceCoords;
     }
   };
 
-  var rangePriceMax = document.querySelector('.range__price--max');
-  rangePriceMax.innerText = MAX_FILTER_PRICE;
-  var rangePriceMin = document.querySelector('.range__price--min');
-  rangePriceMin.innerText = MIN_FILTER_PRICE;
+  var rangePriceMaximum = document.querySelector('.range__price--max');
+  rangePriceMaximum.innerText = MAXIMUM_FILTER_PRICE;
+  var rangePriceMinimum = document.querySelector('.range__price--min');
+  rangePriceMinimum.innerText = MINIMUM_FILTER_PRICE;
 
   var calculatePrice = function (sliderValue) {
     var value = getSliderValue(sliderValue);
-    var price = value * MAX_FILTER_PRICE;
+    var price = value * MAXIMUM_FILTER_PRICE;
     price = Math.round(price);
     return price;
   };
 
   var changeRangeFillLine = function () {
-    var btnRightCoord = btnRight.getBoundingClientRect().left;
-    var btnLeftCoord = btnLeft.getBoundingClientRect().left;
-    var differenceCoords = btnRightCoord - btnLeftCoord;
-    var btnLeftStyleLeft = btnLeft.offsetLeft;
+    var differenceCoords = buttonRight.getBoundingClientRect().left - buttonLeft.getBoundingClientRect().left;
     rangeFillLine.style.width = (differenceCoords) + 'px';
-    rangeFillLine.style.left = (btnLeftStyleLeft) + 'px';
+    rangeFillLine.style.left = (buttonLeft.offsetLeft) + 'px';
   };
 
-  var getSliderBoundMax = function () {
-    var getButtonRightCoord = btnRight.getBoundingClientRect();
-    var getButtonLeftCoord = btnLeft.getBoundingClientRect();
-    var getRangeFillLineCoords = rangeFilter.getBoundingClientRect();
-    var buttonRightCoord = getButtonRightCoord.left;
-    var buttonLeftCoord = getButtonLeftCoord.left;
-    var rangeFillLineLeftCoord = getRangeFillLineCoords.left;
-    var rangeFillLineRightCoord = getRangeFillLineCoords.right - btnRight.offsetWidth;
+  var getSliderBoundMaximum = function () {
+    var buttonRightCoord = buttonRight.getBoundingClientRect();
+    var buttonLeftCoord = buttonLeft.getBoundingClientRect();
+    var rangeFillLineCoords = rangeFilter.getBoundingClientRect();
+    var rangeFillLineLeftCoord = rangeFillLineCoords.left;
+    var rangeFillLineRightCoord = rangeFillLineCoords.right - buttonRight.offsetWidth;
     var differenceFillLineCoords = (rangeFillLineRightCoord - rangeFillLineLeftCoord);
-    if (buttonRightCoord > rangeFillLineRightCoord) {
-      btnRight.style.left = (differenceFillLineCoords) + 'px';
-    } else if (buttonRightCoord < buttonLeftCoord) {
-      btnRight.style.left = btnLeft.style.left;
+    if (buttonRightCoord.left > rangeFillLineRightCoord) {
+      buttonRight.style.left = (differenceFillLineCoords) + 'px';
+    } else if (buttonRightCoord.left < buttonLeftCoord.left) {
+      buttonRight.style.left = buttonLeft.style.left;
     }
   };
 
-  var getSliderBoundMin = function () {
-    var getButtonRightCoord = btnRight.getBoundingClientRect();
-    var getButtonLeftCoord = btnLeft.getBoundingClientRect();
-    var getRangeFillLineCoords = rangeFilter.getBoundingClientRect();
-    var buttonRightCoord = getButtonRightCoord.left;
-    var buttonLeftCoord = getButtonLeftCoord.left;
-    var rangeFillLineLeftCoord = getRangeFillLineCoords.left;
-    if (buttonLeftCoord < rangeFillLineLeftCoord) {
-      btnLeft.style.left = 0;
-    } else if (buttonLeftCoord > buttonRightCoord) {
-      btnLeft.style.left = btnRight.style.left;
+  var getSliderBoundMinimum = function () {
+    var buttonRightCoord = buttonRight.getBoundingClientRect();
+    var buttonLeftCoord = buttonLeft.getBoundingClientRect();
+    var rangeFillLineCoords = rangeFilter.getBoundingClientRect();
+    var rangeFillLineLeftCoord = rangeFillLineCoords.left;
+    if (buttonLeftCoord.left < rangeFillLineLeftCoord) {
+      buttonLeft.style.left = 0;
+    } else if (buttonLeftCoord.left > buttonRightCoord.left) {
+      buttonLeft.style.left = buttonRight.style.left;
     }
   };
 
-  var updateMaxPrice = function () {
-    var price = calculatePrice(btnRight);
-    rangePriceMax.innerText = price;
-    if (window.slider.onUpdateMaxPrice) {
-      window.slider.onUpdateMaxPrice(price);
+  var updateMaximumPrice = function () {
+    var price = calculatePrice(buttonRight);
+    rangePriceMaximum.innerText = price;
+    if (window.slider.updateMaximumPriceHandler) {
+      window.slider.updateMaximumPriceHandler(price);
     }
     changeRangeFillLine();
   };
 
-  var updateMinPrice = function () {
-    var price = calculatePrice(btnLeft);
-    rangePriceMin.innerText = price;
-    if (window.slider.onUpdateMinPrice) {
-      window.slider.onUpdateMinPrice(price);
+  var updateMinimumPrice = function () {
+    var price = calculatePrice(buttonLeft);
+    rangePriceMinimum.innerText = price;
+    if (window.slider.updateMinimumPriceHandler) {
+      window.slider.updateMinimumPriceHandler(price);
     }
     changeRangeFillLine();
   };
 
   var clearSliderValue = function () {
-    var maxPrice = document.querySelector('.range__price--max');
-    var minPrice = document.querySelector('.range__price--min');
-    btnRight.style.left = rangeFilllineWidth + 'px';
-    btnLeft.style.left = 0;
+    var maximumPrice = document.querySelector('.range__price--max');
+    var minimumPrice = document.querySelector('.range__price--min');
+    buttonRight.style.left = rangeFilllineWidth + 'px';
+    buttonLeft.style.left = 0;
     rangeFillLine.style.left = 0;
     rangeFillLine.style.width = rangeFilllineWidth + 'px';
-    maxPrice.textContent = MAX_FILTER_PRICE;
-    minPrice.textContent = MIN_FILTER_PRICE;
+    maximumPrice.textContent = MAXIMUM_FILTER_PRICE;
+    minimumPrice.textContent = MINIMUM_FILTER_PRICE;
   };
 
-  makeDraggable(btnRight, getSliderBoundMax, updateMaxPrice);
+  makeDraggable(buttonRight, getSliderBoundMaximum, updateMaximumPrice);
 
-  makeDraggable(btnLeft, getSliderBoundMin, updateMinPrice);
+  makeDraggable(buttonLeft, getSliderBoundMinimum, updateMinimumPrice);
 
   window.slider = {
-    onUpdateMinPrice: null,
-    onUpdateMaxPrice: null,
+    updateMinimumPriceHandler: null,
+    updateMaximumPriceHandler: null,
     clearSliderValue: clearSliderValue
   };
 

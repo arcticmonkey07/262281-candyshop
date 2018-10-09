@@ -17,13 +17,13 @@
   window.orderSwitches = {
     // Переключение вкладок в форме оплаты
     paymentSwitch: function () {
-      paymentCash.classList.toggle('visually-hidden', bankCard.checked === true);
-      paymentCard.classList.toggle('visually-hidden', payCash.checked === true);
+      paymentCash.classList.toggle('visually-hidden', bankCard.checked);
+      paymentCard.classList.toggle('visually-hidden', payCash.checked);
     },
     // Переключение вкладок в форме доставки
     deliverySwitch: function () {
-      courier.classList.toggle('visually-hidden', storeButton.checked === true);
-      store.classList.toggle('visually-hidden', courierButton.checked === true);
+      courier.classList.toggle('visually-hidden', storeButton.checked);
+      store.classList.toggle('visually-hidden', courierButton.checked);
     }
 
   };

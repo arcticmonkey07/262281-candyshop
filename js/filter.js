@@ -2,7 +2,7 @@
 
 (function () {
 
-  var defaultQuery = {
+  var defaultFilterValues = {
     kind: {
       'Мороженое': false,
       'Газировка': false,
@@ -13,8 +13,8 @@
     noSugar: false,
     vegetarian: false,
     gluten: false,
-    minValue: 0,
-    maxValue: 100,
+    minimumValue: 0,
+    maximumValue: 100,
     amount: false,
     popular: false,
     favorite: false,
@@ -27,7 +27,7 @@
     return JSON.parse(JSON.stringify(object));
   };
 
-  var query = clone(defaultQuery);
+  var currentFilterValues = clone(defaultFilterValues);
 
   var isSomePropertyTrue = function (obj) {
     return Object.keys(obj).some(function (key) {
@@ -36,97 +36,89 @@
   };
 
   var filterByKind = function (card) {
-    var kind = !isSomePropertyTrue(query.kind) || query.kind[card.kind];
+    var kind = !isSomePropertyTrue(currentFilterValues.kind) || currentFilterValues.kind[card.kind];
 
     if (!kind) {
       return false;
-    } else {
-      return kind;
     }
 
+    return kind;
   };
 
   var filterBySugar = function (card) {
-    var sugar = !card.nutritionFacts.sugar || !query.noSugar;
+    var sugar = !card.nutritionFacts.sugar || !currentFilterValues.noSugar;
 
     if (!sugar) {
       return false;
-    } else {
-      return sugar;
     }
 
+    return sugar;
   };
 
   var filterByVegetarian = function (card) {
-    var vegetarian = card.nutritionFacts.vegetarian || !query.vegetarian;
+    var vegetarian = card.nutritionFacts.vegetarian || !currentFilterValues.vegetarian;
 
     if (!vegetarian) {
       return false;
-    } else {
-      return vegetarian;
     }
 
+    return vegetarian;
   };
 
   var filterByGlutenn = function (card) {
-    var gluten = !card.nutritionFacts.gluten || !query.gluten;
+    var gluten = !card.nutritionFacts.gluten || !currentFilterValues.gluten;
 
     if (!gluten) {
       return false;
-    } else {
-      return gluten;
     }
 
+    return gluten;
   };
 
   var filterByMaxPrice = function (card) {
-    var maxPrice = card.price <= query.maxValue;
+    var maxPrice = card.price <= currentFilterValues.maximumValue;
 
     if (!maxPrice) {
       return false;
-    } else {
-      return maxPrice;
     }
 
+    return maxPrice;
   };
 
   var filterByMinPrice = function (card) {
-    var minPrice = card.price >= query.minValue;
+    var minPrice = card.price >= currentFilterValues.minimumValue;
 
     if (!minPrice) {
       return false;
-    } else {
-      return minPrice;
     }
 
+    return minPrice;
   };
 
   var filterByAvailability = function (card) {
-    var availability = card.amount > 0 || !query.availability;
+    var availability = card.amount > 0 || !currentFilterValues.availability;
 
     if (!availability) {
       return false;
-    } else {
-      return availability;
     }
 
+    return availability;
   };
 
   var filterByFavorite = function (card) {
-    var favorite = card.favorite || !query.favorite;
+    var favorite = card.favorite || !currentFilterValues.favorite;
 
     if (!favorite) {
       return false;
-    } else {
-      return favorite;
     }
 
+    return favorite;
   };
 
   var filterKind = document.querySelector('.catalog__filter--kind');
   var inputsKind = filterKind.querySelectorAll('input');
-  var filterNtrition = document.querySelector('.catalog__filter--nutrition');
-  var inputsNutrition = filterNtrition.querySelectorAll('input');
+  var filterNutrition = document.querySelector('.catalog__filter--nutrition');
+  var inputsNutrition = filterNutrition.querySelectorAll('input');
   var inputFavorite = document.querySelector('#filter-favorite');
   var inputAvailability = document.querySelector('#filter-availability');
   var filteredData;
@@ -182,7 +174,7 @@
     clearCheckedInput(inputsKind);
     clearCheckedInput(inputsNutrition);
     window.slider.clearSliderValue();
-    query.favorite = e.target.checked;
+    currentFilterValues.favorite = e.target.checked;
     showFilteredData();
   });
 
@@ -195,9 +187,9 @@
       clearCheckedInput(inputsNutrition);
       inputFavorite.checked = false;
       showFilteredData();
-    } else {
-      return;
     }
+
+    return;
   });
 
   document.querySelector('#filter-sugar-free').addEventListener('change', function (e) {
@@ -205,7 +197,7 @@
     if (!nutrition) {
       return;
     }
-    query.noSugar = e.target.checked;
+    currentFilterValues.noSugar = e.target.checked;
     showFilteredData();
   });
 
@@ -214,7 +206,7 @@
     if (!vegetarian) {
       return;
     }
-    query.vegetarian = e.target.checked;
+    currentFilterValues.vegetarian = e.target.checked;
     showFilteredData();
   });
 
@@ -223,7 +215,7 @@
     if (!gluten) {
       return;
     }
-    query.gluten = e.target.checked;
+    currentFilterValues.gluten = e.target.checked;
     showFilteredData();
   });
 
@@ -232,7 +224,7 @@
     if (!kind) {
       return;
     }
-    query.kind[kind] = e.target.checked;
+    currentFilterValues.kind[kind] = e.target.checked;
     showFilteredData();
   });
 
@@ -261,7 +253,7 @@
   var clearCheckedInput = function (item) {
     for (var i = 0; i < item.length; i++) {
       item[i].checked = false;
-      query = clone(defaultQuery);
+      currentFilterValues = clone(defaultFilterValues);
     }
   };
 
@@ -290,67 +282,67 @@
 
   var getFilterNumber = function () {
 
-    var getFilterNumberKind = function (target, value) {
+    var getNumberKind = function (target, value) {
       var filterData = window.catalog.data.filter(function (card) {
         return card.kind === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
-    var getFilterNumberSugar = function (target, value) {
+    var getNumberSugar = function (target, value) {
       var filterData = window.catalog.data.filter(function (card) {
         return card.nutritionFacts.sugar === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
-    var getFilterNumberVegetarian = function (target, value) {
+    var getNumberVegetarian = function (target, value) {
       var filterData = window.catalog.data.filter(function (card) {
         return card.nutritionFacts.vegetarian === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
-    var getFilterNumberGluten = function (target, value) {
+    var getNumberGluten = function (target, value) {
       var filterData = window.catalog.data.filter(function (card) {
         return card.nutritionFacts.gluten === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
-    var getFilterNumberAvailability = function (target, value) {
+    var getNumberAvailability = function (target, value) {
       var filterData = window.catalog.data.filter(function (card) {
         return card.amount > target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
-    var getFilterNumberFavorite = function (target, value) {
+    var getNumberFavorite = function (target, value) {
       var filterData = window.catalog.data.filter(function (card) {
         return card.favorite === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
-    getFilterNumberKind('Мороженое', numberIcecream);
-    getFilterNumberKind('Газировка', numberSoda);
-    getFilterNumberKind('Жевательная резинка', numberGum);
-    getFilterNumberKind('Мармелад', numberMarmalade);
-    getFilterNumberKind('Зефир', numberMarshmellow);
-    getFilterNumberSugar(false, numberSugar);
-    getFilterNumberVegetarian(true, numberVegetarian);
-    getFilterNumberGluten(false, numberGluten);
-    getFilterNumberAvailability(0, numberAvailability);
-    getFilterNumberFavorite(true, numberFavorite);
+    getNumberKind('Мороженое', numberIcecream);
+    getNumberKind('Газировка', numberSoda);
+    getNumberKind('Жевательная резинка', numberGum);
+    getNumberKind('Мармелад', numberMarmalade);
+    getNumberKind('Зефир', numberMarshmellow);
+    getNumberSugar(false, numberSugar);
+    getNumberVegetarian(true, numberVegetarian);
+    getNumberGluten(false, numberGluten);
+    getNumberAvailability(0, numberAvailability);
+    getNumberFavorite(true, numberFavorite);
   };
 
-  window.slider.onUpdateMaxPrice = function (price) {
-    query.maxValue = price;
+  window.slider.updateMaximumPriceHandler = function (price) {
+    currentFilterValues.maximumValue = price;
     showFilteredData();
   };
 
-  window.slider.onUpdateMinPrice = function (price) {
-    query.minValue = price;
+  window.slider.updateMinimumPriceHandler = function (price) {
+    currentFilterValues.minimumValue = price;
     showFilteredData();
   };
 

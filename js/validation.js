@@ -6,7 +6,7 @@
   var deliverDescription = document.querySelector('.deliver__textarea');
   var courier = document.querySelector('.deliver__courier');
 
-  window.addDisabledForInput = function () {
+  var addDisabledForInput = function () {
     var article = document.querySelector('.goods_card');
 
     var contact = document.querySelector('.contact-data');
@@ -33,7 +33,8 @@
     buyButton.disabled = (article === null);
 
   };
-  window.addDisabledForInput();
+
+  addDisabledForInput();
 
   var email = document.querySelector('#contact-data__email');
 
@@ -72,42 +73,38 @@
     cardDate.disabled = true;
     cardCvc.disabled = true;
     cardHolder.disabled = true;
-    cardNumber.required = false;
-    cardDate.required = false;
-    cardCvc.required = false;
-    cardHolder.required = false;
   });
 
   // проверка номера карты по алгоритму Луна
-  cardNumber.onblur = function () {
-    var num = cardNumber.value;
+  cardNumber.addEventListener('blur', function () {
+    var value = cardNumber.value;
 
     function luhn(number) {
 
-      var arr = [];
+      var array = [];
       number = number.toString();
 
       for (var i = 0; i < number.length; i++) {
         if (i % 2 === 0) {
-          var m = parseInt(number[i], 16) * 2;
-          if (m > 9) {
-            arr.push(m - 9);
+          var digit = parseInt(number[i], 16) * 2;
+          if (digit > 9) {
+            array.push(digit - 9);
           } else {
-            arr.push(m);
+            array.push(digit);
           }
         } else {
-          var n = parseInt(number[i], 16);
-          arr.push(n);
+          var numeric = parseInt(number[i], 16);
+          array.push(numeric);
         }
       }
 
-      var summ = arr.reduce(function (a, b) {
+      var sum = array.reduce(function (a, b) {
         return a + b;
       });
-      return Boolean(!(summ % 10));
+      return Boolean(!(sum % 10));
     }
 
-    if (!isNaN(num) && luhn(num)) {
+    if (!isNaN(value) && luhn(value)) {
       wrapCardNumber.classList.remove('text-input--error');
       wrapCardNumber.classList.add('text-input--correct');
     } else {
@@ -115,7 +112,7 @@
       wrapCardNumber.classList.add('text-input--error');
     }
 
-  };
+  });
 
   var cardInputsValidity = function (input) {
     input.addEventListener('blur', function (evt) {
@@ -170,10 +167,7 @@
     deliverFloor.disabled = true;
     deliverRoom.disabled = true;
     deliverDescription.disabled = true;
-    deliverStreet.required = false;
-    deliverHouse.required = false;
-    deliverRoom.required = false;
-    window.enableStoreInputs();
+    window.validation.enableStoreInputs();
   });
 
   // блокирует инпуты в блоке выбора метро самовывоза
@@ -183,15 +177,38 @@
     for (var i = 0; i < storeInputs.length; i++) {
       storeInputs[i].disabled = true;
     }
+
   };
   disableStoreInputs();
 
-  window.enableStoreInputs = function () {
+  var enableStoreInputs = function () {
     var storeInputs = store.querySelectorAll('.input-btn__input');
 
     for (var i = 0; i < storeInputs.length; i++) {
       storeInputs[i].disabled = false;
     }
+
+  };
+
+  var disablePaymentAndDeliverToggles = function () {
+
+    var deliverToggles = document.querySelectorAll('.toggle-btn__input');
+
+    for (var i = 0; i < deliverToggles.length; i++) {
+      deliverToggles[i].disabled = true;
+    }
+
+  };
+  disablePaymentAndDeliverToggles();
+
+  var enablePaymentAndDeliverToggles = function () {
+
+    var deliverToggles = document.querySelectorAll('.toggle-btn__input');
+
+    for (var i = 0; i < deliverToggles.length; i++) {
+      deliverToggles[i].disabled = false;
+    }
+
   };
 
   courierButton.addEventListener('click', function () {
@@ -206,5 +223,12 @@
     deliverRoom.required = true;
     disableStoreInputs();
   });
+
+  window.validation = {
+    addDisabledForInput: addDisabledForInput,
+    enableStoreInputs: enableStoreInputs,
+    disablePaymentAndDeliverToggles: disablePaymentAndDeliverToggles,
+    enablePaymentAndDeliverToggles: enablePaymentAndDeliverToggles
+  };
 
 })();

@@ -66,7 +66,7 @@
     catalogCards.appendChild(fragment);
     catalogCards.classList.remove('catalog__cards--load');
     catalogLoad.classList.add('visually-hidden');
-    window.runAddToBasketCard();
+    window.addToBasketWithRerender();
   };
 
   // загружает массив объектов с сервера
@@ -103,10 +103,10 @@
     }
     var cardElement = evt.target.closest('.catalog__card');
     var id = cardElement.dataset.id;
-    var favCard = window.catalog.data[id];
-    favCard.favorite = !favCard.favorite;
+    var favoriteCard = window.catalog.data[id];
+    favoriteCard.favorite = !favoriteCard.favorite;
 
-    target.classList.toggle('card__btn-favorite--selected', favCard.favorite);
+    target.classList.toggle('card__btn-favorite--selected', favoriteCard.favorite);
   });
 
   // Показывает и скрывает состав

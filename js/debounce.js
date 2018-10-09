@@ -7,14 +7,14 @@
     var lastTimeout = null;
 
     return function () {
-      var args = arguments;
+      var argument = arguments;
 
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);
       }
 
       lastTimeout = window.setTimeout(function () {
-        fun.apply(null, args);
+        fun.apply(null, argument);
       }, DEBOUNCE_INTERVAL);
     };
 
