@@ -23,6 +23,7 @@
         emptyBasketMessage();
         window.addDisabledForInput();
         window.enableStoreInputs();
+        window.enablePaymentAndDeliverToggles();
         headerBasketMessage(getCartTotalCount());
       };
     };

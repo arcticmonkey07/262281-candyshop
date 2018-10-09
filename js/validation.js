@@ -190,6 +190,27 @@
 
   };
 
+  var disablePaymentAndDeliverToggles = function () {
+
+    var deliverToggles = document.querySelectorAll('.toggle-btn__input');
+
+    for (var i = 0; i < deliverToggles.length; i++) {
+      deliverToggles[i].disabled = true;
+    }
+
+  };
+  disablePaymentAndDeliverToggles();
+
+  window.enablePaymentAndDeliverToggles = function () {
+
+    var deliverToggles = document.querySelectorAll('.toggle-btn__input');
+
+    for (var i = 0; i < deliverToggles.length; i++) {
+      deliverToggles[i].disabled = false;
+    }
+
+  };
+
   courierButton.addEventListener('click', function () {
     window.orderSwitches.deliverySwitch();
     deliverStreet.disabled = false;
