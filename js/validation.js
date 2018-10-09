@@ -6,7 +6,7 @@
   var deliverDescription = document.querySelector('.deliver__textarea');
   var courier = document.querySelector('.deliver__courier');
 
-  window.addDisabledForInput = function () {
+  var addDisabledForInput = function () {
     var article = document.querySelector('.goods_card');
 
     var contact = document.querySelector('.contact-data');
@@ -34,7 +34,7 @@
 
   };
 
-  window.addDisabledForInput();
+  addDisabledForInput();
 
   var email = document.querySelector('#contact-data__email');
 
@@ -167,7 +167,7 @@
     deliverFloor.disabled = true;
     deliverRoom.disabled = true;
     deliverDescription.disabled = true;
-    window.enableStoreInputs();
+    window.validation.enableStoreInputs();
   });
 
   // блокирует инпуты в блоке выбора метро самовывоза
@@ -181,7 +181,7 @@
   };
   disableStoreInputs();
 
-  window.enableStoreInputs = function () {
+  var enableStoreInputs = function () {
     var storeInputs = store.querySelectorAll('.input-btn__input');
 
     for (var i = 0; i < storeInputs.length; i++) {
@@ -190,7 +190,7 @@
 
   };
 
-  window.disablePaymentAndDeliverToggles = function () {
+  var disablePaymentAndDeliverToggles = function () {
 
     var deliverToggles = document.querySelectorAll('.toggle-btn__input');
 
@@ -199,9 +199,9 @@
     }
 
   };
-  window.disablePaymentAndDeliverToggles();
+  disablePaymentAndDeliverToggles();
 
-  window.enablePaymentAndDeliverToggles = function () {
+  var enablePaymentAndDeliverToggles = function () {
 
     var deliverToggles = document.querySelectorAll('.toggle-btn__input');
 
@@ -223,5 +223,12 @@
     deliverRoom.required = true;
     disableStoreInputs();
   });
+
+  window.validation = {
+    addDisabledForInput: addDisabledForInput,
+    enableStoreInputs: enableStoreInputs,
+    disablePaymentAndDeliverToggles: disablePaymentAndDeliverToggles,
+    enablePaymentAndDeliverToggles: enablePaymentAndDeliverToggles
+  };
 
 })();

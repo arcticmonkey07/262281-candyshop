@@ -21,9 +21,9 @@
         addCardToBasket(cardsOnCatalog[e], e);
         evt.preventDefault();
         showEmptyBasketMessage();
-        window.addDisabledForInput();
-        window.enableStoreInputs();
-        window.enablePaymentAndDeliverToggles();
+        window.validation.addDisabledForInput();
+        window.validation.enableStoreInputs();
+        window.validation.enablePaymentAndDeliverToggles();
         showHeaderBasketMessage(getCartTotalCount());
       };
     };
@@ -90,8 +90,8 @@
     var targetCard = evt.target.closest('.card-order');
     goodCards.removeChild(targetCard);
     showEmptyBasketMessage();
-    window.addDisabledForInput();
-    window.disablePaymentAndDeliverToggles();
+    window.validation.addDisabledForInput();
+    window.validation.disablePaymentAndDeliverToggles();
     showHeaderBasketMessage(getCartTotalCount());
   });
 
