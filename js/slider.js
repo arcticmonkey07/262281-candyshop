@@ -21,7 +21,7 @@
   var rangeFilllineWidth = rangeFillLine.offsetWidth - buttonRightWidth;
 
 
-  var makeDraggable = function (element, getBounds, moveCallback) {
+  var makeDraggable = function (element, bounds, moveCallback) {
 
     element.addEventListener('mousedown', function (evt) {
       evt.preventDefault();
@@ -41,7 +41,7 @@
           x: startPointerCoords.x - moveEvt.clientX
         };
         element.style.left = (startElementCoords.x - shift.x) + 'px';
-        getBounds();
+        bounds();
         moveCallback();
 
       };
@@ -57,11 +57,11 @@
   };
 
   var getSliderValue = function (button) {
-    var getButtonCoords = button.getBoundingClientRect();
-    var getRangeFillLineCoords = rangeFilter.getBoundingClientRect();
-    var buttonCoord = getButtonCoords.left;
-    var rangeFillLineLeftCoord = getRangeFillLineCoords.left;
-    var rangeFillLineRightCoord = getRangeFillLineCoords.right - button.offsetWidth;
+    var buttonCoords = button.getBoundingClientRect();
+    var rangeFillLineCoords = rangeFilter.getBoundingClientRect();
+    var buttonCoord = buttonCoords.left;
+    var rangeFillLineLeftCoord = rangeFillLineCoords.left;
+    var rangeFillLineRightCoord = rangeFillLineCoords.right - button.offsetWidth;
     var widthFillLine = rangeFillLineRightCoord - rangeFillLineLeftCoord;
     var differenceCoords = (rangeFillLineRightCoord - buttonCoord) / widthFillLine;
     if (buttonCoord === rangeFillLineRightCoord) {
