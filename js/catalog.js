@@ -66,7 +66,7 @@
     catalogCards.appendChild(fragment);
     catalogCards.classList.remove('catalog__cards--load');
     catalogLoad.classList.add('visually-hidden');
-    window.runAddToBasketCard();
+    window.addToBasketWithRerender();
   };
 
   // загружает массив объектов с сервера

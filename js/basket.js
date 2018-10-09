@@ -6,13 +6,13 @@
   var goodOrder = document.querySelector('#card-order');
 
   // убирает сообщение о пустой корзине
-  var emptyBasketMessage = function () {
+  var showEmptyBasketMessage = function () {
     var goodsArticle = document.querySelector('.goods_card');
     document.querySelector('.goods__cards').classList.toggle('goods__cards--empty', goodsArticle === null);
     document.querySelector('.goods__card-empty').classList.toggle('visually-hidden', goodsArticle !== null);
   };
 
-  window.runAddToBasketCard = function () {
+  window.addToBasketWithRerender = function () {
     // Создает карточку товара в корзине
     var cardsOnCatalog = document.querySelectorAll('.catalog__card');
 
@@ -20,11 +20,11 @@
       return function (evt) {
         addCardToBasket(cardsOnCatalog[e], e);
         evt.preventDefault();
-        emptyBasketMessage();
+        showEmptyBasketMessage();
         window.addDisabledForInput();
         window.enableStoreInputs();
         window.enablePaymentAndDeliverToggles();
-        headerBasketMessage(getCartTotalCount());
+        showHeaderBasketMessage(getCartTotalCount());
       };
     };
 
@@ -89,9 +89,10 @@
 
     var targetCard = evt.target.closest('.card-order');
     goodCards.removeChild(targetCard);
-    emptyBasketMessage();
+    showEmptyBasketMessage();
     window.addDisabledForInput();
-    headerBasketMessage(getCartTotalCount());
+    window.disablePaymentAndDeliverToggles();
+    showHeaderBasketMessage(getCartTotalCount());
   });
 
   // смотрит на кол-во товара в корзине
@@ -111,11 +112,11 @@
     if (parseInt(value.value, 10) > parseInt(attribute, 10)) {
       value.value = attribute;
       value.setAttribute('data-amount', value.value);
-      headerBasketMessage(getCartTotalCount());
+      showHeaderBasketMessage(getCartTotalCount());
     } else if (parseInt(value.value, 10) < 1) {
       var targetCard = goodCards.querySelector('.card-order[data-id="' + value.dataset.id + '"]');
       goodCards.removeChild(targetCard);
-      emptyBasketMessage();
+      showEmptyBasketMessage();
     }
 
   };
@@ -140,7 +141,7 @@
       var value = element.parentNode.querySelector('.card-order__count');
       increaseValue(value);
       value.setAttribute('data-amount', value.value);
-      headerBasketMessage(getCartTotalCount());
+      showHeaderBasketMessage(getCartTotalCount());
     });
   };
 
@@ -152,14 +153,14 @@
       value.value--;
       inputHandler(value);
       value.setAttribute('data-amount', value.value);
-      headerBasketMessage(getCartTotalCount());
+      showHeaderBasketMessage(getCartTotalCount());
     });
   };
 
   // добавляет сообщение в корзину в header
   var headerBasket = document.querySelector('.main-header__basket');
 
-  var headerBasketMessage = function (basketNumber) {
+  var showHeaderBasketMessage = function (basketNumber) {
 
     if (basketNumber < 1) {
       headerBasket.innerHTML = 'В корзине ничего нет';

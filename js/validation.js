@@ -190,7 +190,7 @@
 
   };
 
-  var disablePaymentAndDeliverToggles = function () {
+  window.disablePaymentAndDeliverToggles = function () {
 
     var deliverToggles = document.querySelectorAll('.toggle-btn__input');
 
@@ -199,7 +199,7 @@
     }
 
   };
-  disablePaymentAndDeliverToggles();
+  window.disablePaymentAndDeliverToggles();
 
   window.enablePaymentAndDeliverToggles = function () {
 
