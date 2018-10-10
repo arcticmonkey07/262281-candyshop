@@ -55,8 +55,8 @@
         cardElement.querySelector('.card-order__price').textContent = goodCard.price + ' ₽';
 
         cardElement.querySelector('.goods_card').setAttribute('data-id', i);
-        var value = cardElement.querySelector('.card-order__count');
-        value.setAttribute('data-id', i);
+        var cardOrderCount = cardElement.querySelector('.card-order__count');
+        cardOrderCount.setAttribute('data-id', i);
         var input = cardElement.querySelector('.card-order__count');
         input.setAttribute('maxlength', goodCard.amount);
         var increaseButton = cardElement.querySelector('.card-order__btn--increase');
@@ -64,12 +64,12 @@
         increaseHandler(increaseButton);
         decreaseHandler(decreaseButton);
         changeInputHandler(input);
-        value.setAttribute('data-amount', value.value);
+        cardOrderCount.setAttribute('data-amount', cardOrderCount.value);
         goodCards.appendChild(cardElement);
       } else {
-        value = dataAttribute.querySelector('.card-order__count');
-        increaseValue(value);
-        value.setAttribute('data-amount', value.value);
+        cardOrderCount = dataAttribute.querySelector('.card-order__count');
+        increaseValue(cardOrderCount);
+        cardOrderCount.setAttribute('data-amount', cardOrderCount.value);
       }
 
     };
@@ -138,9 +138,9 @@
   var increaseHandler = function (element) {
     element.addEventListener('click', function (evt) {
       evt.preventDefault();
-      var value = element.parentNode.querySelector('.card-order__count');
-      increaseValue(value);
-      value.setAttribute('data-amount', value.value);
+      var cardOrderCount = element.parentNode.querySelector('.card-order__count');
+      increaseValue(cardOrderCount);
+      cardOrderCount.setAttribute('data-amount', cardOrderCount.value);
       showHeaderBasketMessage(getCartTotalCount());
     });
   };
@@ -149,10 +149,10 @@
   var decreaseHandler = function (element) {
     element.addEventListener('click', function (evt) {
       evt.preventDefault();
-      var value = element.parentNode.querySelector('.card-order__count');
-      value.value--;
-      inputHandler(value);
-      value.setAttribute('data-amount', value.value);
+      var cardOrderCount = element.parentNode.querySelector('.card-order__count');
+      cardOrderCount.value--;
+      inputHandler(cardOrderCount);
+      cardOrderCount.setAttribute('data-amount', cardOrderCount.value);
       showHeaderBasketMessage(getCartTotalCount());
     });
   };
