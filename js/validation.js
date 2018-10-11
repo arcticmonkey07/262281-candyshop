@@ -75,7 +75,7 @@
   });
 
   // проверка номера карты по алгоритму Луна
-  var getLuhnNumber = function (number) {
+  var checkLuhnNumber = function (number) {
 
     var array = [];
     number = number.toString();
@@ -101,7 +101,7 @@
   };
 
   cardNumber.addEventListener('change', function () {
-    if (!isNaN(cardNumber.value) && getLuhnNumber(cardNumber.value)) {
+    if (!isNaN(cardNumber.value) && checkLuhnNumber(cardNumber.value)) {
       wrapCardNumber.classList.remove('text-input--error');
       wrapCardNumber.classList.add('text-input--correct');
     } else {
@@ -129,7 +129,7 @@
 
   // проверяет валидацию всех форм в блоке банковской карты
   var setCardValidity = function () {
-    if (getLuhnNumber(cardNumber.value) && cardDate.checkValidity() && cardCvc.checkValidity() && cardHolder.checkValidity()) {
+    if (checkLuhnNumber(cardNumber.value) && cardDate.checkValidity() && cardCvc.checkValidity() && cardHolder.checkValidity()) {
       paymentMessage.textContent = 'ОДОБРЕН';
       paymentStatus.classList.remove('payment__card-status--not-active');
       paymentStatus.classList.add('payment__card-status--active');
