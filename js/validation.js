@@ -33,7 +33,6 @@
     buyButton.disabled = (article === null);
 
   };
-
   addDisabledForInput();
 
   var email = document.querySelector('#contact-data__email');
@@ -76,46 +75,43 @@
   });
 
   // проверка номера карты по алгоритму Луна
-  cardNumber.addEventListener('blur', function () {
-    var value = cardNumber.value;
+  var checkLuhnNumber = function (number) {
 
-    function luhn(number) {
+    var array = [];
+    number = number.toString();
 
-      var array = [];
-      number = number.toString();
-
-      for (var i = 0; i < number.length; i++) {
-        if (i % 2 === 0) {
-          var digit = parseInt(number[i], 16) * 2;
-          if (digit > 9) {
-            array.push(digit - 9);
-          } else {
-            array.push(digit);
-          }
+    for (var i = 0; i < number.length; i++) {
+      if (i % 2 === 0) {
+        var digit = parseInt(number[i], 16) * 2;
+        if (digit > 9) {
+          array.push(digit - 9);
         } else {
-          var numeric = parseInt(number[i], 16);
-          array.push(numeric);
+          array.push(digit);
         }
+      } else {
+        var numeric = parseInt(number[i], 16);
+        array.push(numeric);
       }
-
-      var sum = array.reduce(function (a, b) {
-        return a + b;
-      });
-      return Boolean(!(sum % 10));
     }
 
-    if (!isNaN(value) && luhn(value)) {
+    var sum = array.reduce(function (a, b) {
+      return a + b;
+    });
+    return Boolean(!(sum % 10));
+  };
+
+  cardNumber.addEventListener('change', function () {
+    if (!isNaN(cardNumber.value) && checkLuhnNumber(cardNumber.value)) {
       wrapCardNumber.classList.remove('text-input--error');
       wrapCardNumber.classList.add('text-input--correct');
     } else {
       wrapCardNumber.classList.remove('text-input--correct');
       wrapCardNumber.classList.add('text-input--error');
     }
-
   });
 
   var cardInputsValidity = function (input) {
-    input.addEventListener('blur', function (evt) {
+    input.addEventListener('change', function (evt) {
       var target = evt.target;
       if (!input.checkValidity()) {
         target.closest('.text-input').classList.remove('text-input--correct');
@@ -133,7 +129,7 @@
 
   // проверяет валидацию всех форм в блоке банковской карты
   var setCardValidity = function () {
-    if (cardNumber.checkValidity() && cardDate.checkValidity() && cardCvc.checkValidity() && cardHolder.checkValidity()) {
+    if (checkLuhnNumber(cardNumber.value) && cardDate.checkValidity() && cardCvc.checkValidity() && cardHolder.checkValidity()) {
       paymentMessage.textContent = 'ОДОБРЕН';
       paymentStatus.classList.remove('payment__card-status--not-active');
       paymentStatus.classList.add('payment__card-status--active');
