@@ -33,11 +33,11 @@
     // Добавляет товары в корзину при клике на кнопку добавить
     var addBasketButtonHandler = function () {
 
-      for (var i = 0; i < addButtons.length; i++) {
-        addButtons[i].addEventListener('click', addBasketHandler(
-            addButtons[i].closest('.catalog__card').dataset.id
+      addButtons.forEach(function (button) {
+        button.addEventListener('click', addBasketHandler(
+            button.closest('.catalog__card').dataset.id
         ));
-      }
+      });
 
     };
     addBasketButtonHandler();
@@ -74,6 +74,19 @@
 
     };
 
+    // Показывает и скрывает состав
+    cardsOnCatalog.forEach(function (card) {
+      var target = card;
+
+      target.addEventListener('click', function (evt) {
+        evt.preventDefault();
+
+        if (evt.target.classList.contains('card__btn-composition')) {
+          evt.currentTarget.querySelector('.card__composition').classList.toggle('card__composition--hidden');
+        }
+      });
+    });
+
     window.filter.getFilterNumber();
 
   };
@@ -99,9 +112,9 @@
   var getCartTotalCount = function () {
     var goodsInCart = document.querySelectorAll('.goods__cards .card-order__count');
     var total = 0;
-    for (var i = 0; i < goodsInCart.length; i++) {
-      total += +goodsInCart[i].dataset.amount;
-    }
+    goodsInCart.forEach(function (goods) {
+      total += +goods.dataset.amount;
+    });
     return total;
   };
 

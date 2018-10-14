@@ -235,8 +235,41 @@
   catalogEmptyFilter.classList.add('visually-hidden');
   window.catalogEmptyFilter = catalogEmptyFilter;
 
+  var getFiltersList = function () {
+
+    var filtersList = [];
+    for (var key in defaultFilterValues) {
+      if (JSON.stringify(defaultFilterValues[key]) !== JSON.stringify(currentFilterValues[key])) {
+        filtersList.push(key);
+      }
+    }
+
+    return filtersList;
+  };
+
+  var filterFunctions = {
+    'kind': filterByKind,
+    'noSugar': filterBySugar,
+    'gluten': filterByGlutenn,
+    'vegetarian': filterByVegetarian,
+    'maximumValue': filterByMaxPrice,
+    'minimumValue': filterByMinPrice,
+    'availability': filterByAvailability,
+    'favorite': filterByFavorite,
+  };
+
+  var getfilterData = function (filters) {
+
+    return window.catalog.data.filter(function (element) {
+      return filters.every(function (filter) {
+        return filterFunctions[filter](element);
+      });
+    });
+
+  };
+
   var showFilteredData = window.debounce(function () {
-    filteredData = window.catalog.data.filter(filterByKind).filter(filterBySugar).filter(filterByVegetarian).filter(filterByGlutenn).filter(filterByMaxPrice).filter(filterByMinPrice).filter(filterByAvailability).filter(filterByFavorite);
+    filteredData = getfilterData(getFiltersList());
     sort(filteredData);
     catalogEmptyFilter.classList.add('visually-hidden');
     if (filteredData.length === 0) {
@@ -251,10 +284,10 @@
   var filterInput = filterList.querySelectorAll('input');
 
   var clearCheckedInput = function (item) {
-    for (var i = 0; i < item.length; i++) {
-      item[i].checked = false;
+    item.forEach(function (input) {
+      input.checked = false;
       currentFilterValues = clone(defaultFilterValues);
-    }
+    });
   };
 
   var catalogSubmit = document.querySelector('.catalog__submit');

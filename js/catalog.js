@@ -53,9 +53,9 @@
   var appendFragment = function (cards) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < cards.length; i++) {
-      fragment.appendChild(renderCard(cards[i]));
-    }
+    cards.forEach(function (item) {
+      fragment.appendChild(renderCard(item));
+    });
 
     // удаляем старые карты, если они есть
     var oldCards = catalogCards.querySelectorAll('article');
@@ -107,18 +107,6 @@
     favoriteCard.favorite = !favoriteCard.favorite;
 
     target.classList.toggle('card__btn-favorite--selected', favoriteCard.favorite);
-  });
-
-  // Показывает и скрывает состав
-  catalogCards.addEventListener('click', function (evt) {
-    evt.preventDefault();
-    var cardMain = evt.target.closest('.card__main');
-    var target = evt.target.closest('.card__btn-composition');
-    var composition = cardMain.querySelector('.card__composition');
-    if (!target) {
-      return;
-    }
-    composition.classList.toggle('card__composition--hidden');
   });
 
   window.catalog = {
