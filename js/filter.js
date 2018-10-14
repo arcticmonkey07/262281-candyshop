@@ -235,6 +235,41 @@
   catalogEmptyFilter.classList.add('visually-hidden');
   window.catalogEmptyFilter = catalogEmptyFilter;
 
+  var getFiltersList = function () {
+
+    var filtersList = [];
+    for (var key in defaultFilterValues) {
+      if (JSON.stringify(defaultFilterValues[key]) !== JSON.stringify(currentFilterValues[key])) {
+        filtersList.push(key);
+      }
+    }
+
+    return filtersList;
+  };
+
+  var filterFunctionsObject = {
+    'kind': filterByKind,
+    'sugar': filterBySugar,
+    'glutenn': filterByGlutenn,
+    'vegeterian': filterByVegetarian,
+    'maxprice': filterByMaxPrice,
+    'minprice': filterByMinPrice,
+    'vailability': filterByAvailability,
+    'favorite': filterByFavorite,
+  };
+
+  var filterData = function (filters) {
+
+    return window.catalog.data.filter(function (element) {
+      return filters.every(function (filter) {
+        return filterFunctionsObject[filter](element);
+      });
+    });
+
+  };
+
+  filteredData = filterData(getFiltersList());
+
   var showFilteredData = window.debounce(function () {
     filteredData = window.catalog.data.filter(filterByKind).filter(filterBySugar).filter(filterByVegetarian).filter(filterByGlutenn).filter(filterByMaxPrice).filter(filterByMinPrice).filter(filterByAvailability).filter(filterByFavorite);
     sort(filteredData);
@@ -283,42 +318,42 @@
   var getFilterNumber = function () {
 
     var getNumberKind = function (target, value) {
-      var filterData = window.catalog.data.filter(function (card) {
+      filterData = window.catalog.data.filter(function (card) {
         return card.kind === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
     var getNumberSugar = function (target, value) {
-      var filterData = window.catalog.data.filter(function (card) {
+      filterData = window.catalog.data.filter(function (card) {
         return card.nutritionFacts.sugar === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
     var getNumberVegetarian = function (target, value) {
-      var filterData = window.catalog.data.filter(function (card) {
+      filterData = window.catalog.data.filter(function (card) {
         return card.nutritionFacts.vegetarian === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
     var getNumberGluten = function (target, value) {
-      var filterData = window.catalog.data.filter(function (card) {
+      filterData = window.catalog.data.filter(function (card) {
         return card.nutritionFacts.gluten === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
     var getNumberAvailability = function (target, value) {
-      var filterData = window.catalog.data.filter(function (card) {
+      filterData = window.catalog.data.filter(function (card) {
         return card.amount > target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
     var getNumberFavorite = function (target, value) {
-      var filterData = window.catalog.data.filter(function (card) {
+      filterData = window.catalog.data.filter(function (card) {
         return card.favorite === target;
       });
       value.textContent = '(' + filterData.length + ')';

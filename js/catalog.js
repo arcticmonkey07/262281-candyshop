@@ -109,18 +109,6 @@
     target.classList.toggle('card__btn-favorite--selected', favoriteCard.favorite);
   });
 
-  // Показывает и скрывает состав
-  catalogCards.addEventListener('click', function (evt) {
-    evt.preventDefault();
-    var cardMain = evt.target.closest('.card__main');
-    var target = evt.target.closest('.card__btn-composition');
-    var composition = cardMain.querySelector('.card__composition');
-    if (!target) {
-      return;
-    }
-    composition.classList.toggle('card__composition--hidden');
-  });
-
   window.catalog = {
     appendFragment: appendFragment,
     data: []

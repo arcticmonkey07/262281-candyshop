@@ -74,6 +74,19 @@
 
     };
 
+    // Показывает и скрывает состав
+    cardsOnCatalog.forEach(function (item) {
+      var target = item;
+
+      target.addEventListener('click', function (evt) {
+        evt.preventDefault();
+
+        if (evt.target.classList.contains('card__btn-composition')) {
+          evt.currentTarget.querySelector('.card__composition').classList.toggle('card__composition--hidden');
+        }
+      });
+    });
+
     window.filter.getFilterNumber();
 
   };
