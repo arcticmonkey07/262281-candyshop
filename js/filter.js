@@ -254,7 +254,7 @@
     'vegeterian': filterByVegetarian,
     'maxprice': filterByMaxPrice,
     'minprice': filterByMinPrice,
-    'vailability': filterByAvailability,
+    'availability': filterByAvailability,
     'favorite': filterByFavorite,
   };
 
@@ -268,10 +268,8 @@
 
   };
 
-  filteredData = filterData(getFiltersList());
-
   var showFilteredData = window.debounce(function () {
-    filteredData = window.catalog.data.filter(filterByKind).filter(filterBySugar).filter(filterByVegetarian).filter(filterByGlutenn).filter(filterByMaxPrice).filter(filterByMinPrice).filter(filterByAvailability).filter(filterByFavorite);
+    filteredData = filterData(getFiltersList());
     sort(filteredData);
     catalogEmptyFilter.classList.add('visually-hidden');
     if (filteredData.length === 0) {
