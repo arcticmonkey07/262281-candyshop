@@ -53,9 +53,9 @@
   var appendFragment = function (cards) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < cards.length; i++) {
-      fragment.appendChild(renderCard(cards[i]));
-    }
+    cards.forEach(function (card) {
+      fragment.appendChild(renderCard(card));
+    });
 
     // удаляем старые карты, если они есть
     var oldCards = catalogCards.querySelectorAll('article');

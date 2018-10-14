@@ -249,11 +249,11 @@
 
   var filterFunctions = {
     'kind': filterByKind,
-    'sugar': filterBySugar,
-    'glutenn': filterByGlutenn,
-    'vegeterian': filterByVegetarian,
-    'maxprice': filterByMaxPrice,
-    'minprice': filterByMinPrice,
+    'noSugar': filterBySugar,
+    'gluten': filterByGlutenn,
+    'vegetarian': filterByVegetarian,
+    'maximumValue': filterByMaxPrice,
+    'minimumValue': filterByMinPrice,
     'availability': filterByAvailability,
     'favorite': filterByFavorite,
   };
@@ -284,10 +284,10 @@
   var filterInput = filterList.querySelectorAll('input');
 
   var clearCheckedInput = function (item) {
-    for (var i = 0; i < item.length; i++) {
-      item[i].checked = false;
+    item.forEach(function (input) {
+      input.checked = false;
       currentFilterValues = clone(defaultFilterValues);
-    }
+    });
   };
 
   var catalogSubmit = document.querySelector('.catalog__submit');

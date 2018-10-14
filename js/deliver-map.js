@@ -19,13 +19,13 @@
 
   deliver.addEventListener('click', function () {
 
-    for (var i = 0; i < deliverAdress.length; i++) {
+    deliverAdress.forEach(function (input, i) {
 
-      if (deliverAdress[i].checked) {
+      if (input.checked) {
         deliverImage.src = MAP_IMAGE[i];
       }
 
-    }
+    });
 
   });
 

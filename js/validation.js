@@ -12,22 +12,22 @@
     var contact = document.querySelector('.contact-data');
     var contactInputs = contact.querySelectorAll('.text-input__input');
 
-    for (var i = 0; i < contactInputs.length; i++) {
-      contactInputs[i].disabled = (article === null);
-    }
+    contactInputs.forEach(function (input) {
+      input.disabled = (article === null);
+    });
 
     var paymentInputs = payment.querySelectorAll('.text-input__input');
 
-    for (var j = 0; j < paymentInputs.length; j++) {
-      paymentInputs[j].disabled = (article === null);
-    }
+    paymentInputs.forEach(function (input) {
+      input.disabled = (article === null);
+    });
 
     var courierInputs = courier.querySelectorAll('.text-input__input');
 
-    for (var k = 0; k < courierInputs.length; k++) {
-      courierInputs[k].disabled = true;
+    courierInputs.forEach(function (input) {
+      input.disabled = true;
       deliverDescription.disabled = true;
-    }
+    });
 
     var buyButton = document.querySelector('.buy__submit-btn');
     buyButton.disabled = (article === null);
@@ -170,9 +170,9 @@
   var disableStoreInputs = function () {
     var storeInputs = store.querySelectorAll('.input-btn__input');
 
-    for (var i = 0; i < storeInputs.length; i++) {
-      storeInputs[i].disabled = true;
-    }
+    storeInputs.forEach(function (input) {
+      input.disabled = true;
+    });
 
   };
   disableStoreInputs();
@@ -180,9 +180,9 @@
   var enableStoreInputs = function () {
     var storeInputs = store.querySelectorAll('.input-btn__input');
 
-    for (var i = 0; i < storeInputs.length; i++) {
-      storeInputs[i].disabled = false;
-    }
+    storeInputs.forEach(function (input) {
+      input.disabled = false;
+    });
 
   };
 
@@ -190,9 +190,9 @@
 
     var deliverToggles = document.querySelectorAll('.toggle-btn__input');
 
-    for (var i = 0; i < deliverToggles.length; i++) {
-      deliverToggles[i].disabled = true;
-    }
+    deliverToggles.forEach(function (input) {
+      input.disabled = true;
+    });
 
   };
   disablePaymentAndDeliverToggles();
@@ -201,9 +201,9 @@
 
     var deliverToggles = document.querySelectorAll('.toggle-btn__input');
 
-    for (var i = 0; i < deliverToggles.length; i++) {
-      deliverToggles[i].disabled = false;
-    }
+    deliverToggles.forEach(function (input) {
+      input.disabled = false;
+    });
 
   };
 
