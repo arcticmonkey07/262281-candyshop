@@ -247,7 +247,7 @@
     return filtersList;
   };
 
-  var filterFunctionsObject = {
+  var filterFunctions = {
     'kind': filterByKind,
     'sugar': filterBySugar,
     'glutenn': filterByGlutenn,
@@ -258,18 +258,18 @@
     'favorite': filterByFavorite,
   };
 
-  var filterData = function (filters) {
+  var getfilterData = function (filters) {
 
     return window.catalog.data.filter(function (element) {
       return filters.every(function (filter) {
-        return filterFunctionsObject[filter](element);
+        return filterFunctions[filter](element);
       });
     });
 
   };
 
   var showFilteredData = window.debounce(function () {
-    filteredData = filterData(getFiltersList());
+    filteredData = getfilterData(getFiltersList());
     sort(filteredData);
     catalogEmptyFilter.classList.add('visually-hidden');
     if (filteredData.length === 0) {
@@ -316,42 +316,42 @@
   var getFilterNumber = function () {
 
     var getNumberKind = function (target, value) {
-      filterData = window.catalog.data.filter(function (card) {
+      var filterData = window.catalog.data.filter(function (card) {
         return card.kind === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
     var getNumberSugar = function (target, value) {
-      filterData = window.catalog.data.filter(function (card) {
+      var filterData = window.catalog.data.filter(function (card) {
         return card.nutritionFacts.sugar === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
     var getNumberVegetarian = function (target, value) {
-      filterData = window.catalog.data.filter(function (card) {
+      var filterData = window.catalog.data.filter(function (card) {
         return card.nutritionFacts.vegetarian === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
     var getNumberGluten = function (target, value) {
-      filterData = window.catalog.data.filter(function (card) {
+      var filterData = window.catalog.data.filter(function (card) {
         return card.nutritionFacts.gluten === target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
     var getNumberAvailability = function (target, value) {
-      filterData = window.catalog.data.filter(function (card) {
+      var filterData = window.catalog.data.filter(function (card) {
         return card.amount > target;
       });
       value.textContent = '(' + filterData.length + ')';
     };
 
     var getNumberFavorite = function (target, value) {
-      filterData = window.catalog.data.filter(function (card) {
+      var filterData = window.catalog.data.filter(function (card) {
         return card.favorite === target;
       });
       value.textContent = '(' + filterData.length + ')';
