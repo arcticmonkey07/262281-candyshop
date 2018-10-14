@@ -53,8 +53,8 @@
   var appendFragment = function (cards) {
     var fragment = document.createDocumentFragment();
 
-    cards.forEach(function (card) {
-      fragment.appendChild(renderCard(card));
+    cards.forEach(function (item) {
+      fragment.appendChild(renderCard(item));
     });
 
     // удаляем старые карты, если они есть
